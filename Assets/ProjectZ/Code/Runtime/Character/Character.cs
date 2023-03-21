@@ -40,6 +40,9 @@ namespace ProjectZ.Code.Runtime.Character
         [Foldout("References"), Tooltip("World Camera")]
         [SerializeField] private new UnityEngine.Camera camera;
         
+        [Foldout("References"), Tooltip("Character Animator")]
+        [SerializeField] private Animator animator;
+        
         [Foldout("Values"), Tooltip("Player points")]
         [SerializeField] private int points;
         
@@ -57,6 +60,7 @@ namespace ProjectZ.Code.Runtime.Character
         private WeaponBehaviour _equippedWeapon;
         private bool _isAttacking;
         private float _lastShotTime;
+        private ICharacterAnimatorEventCaster _characterAnimatorEventCaster;
 
         #endregion
         
@@ -69,6 +73,8 @@ namespace ProjectZ.Code.Runtime.Character
             combat = GetComponent<CombatBehaviour>();
             interactor = GetComponent<InteractorBehaviour>();
             camera = GetComponentInChildren<UnityEngine.Camera>();
+            characterKinematics = GetComponent<CharacterKinematics>();
+            animator = GetComponent<Animator>();
         }
 
         protected override void Awake()
@@ -81,6 +87,13 @@ namespace ProjectZ.Code.Runtime.Character
             inventory.Init(0);
             _equippedWeapon = inventory.GetWeaponEquipped();
             SubscribeInputEvents();
+            SubscribeAnimationEvents();
+        }
+
+        // TODO:
+        private void SubscribeAnimationEvents()
+        {
+            _characterAnimatorEventCaster.GrenadeEvent += delegate {  };
         }
 
         protected override void Update()
@@ -213,6 +226,11 @@ namespace ProjectZ.Code.Runtime.Character
         #endregion
 
         #region FUNCTIONS
+
+        public void Configure(ICharacterAnimatorEventCaster characterAnimatorEventCaster)
+        {
+            _characterAnimatorEventCaster = characterAnimatorEventCaster;
+        }
 
         private void SubscribeInputEvents()
         {
