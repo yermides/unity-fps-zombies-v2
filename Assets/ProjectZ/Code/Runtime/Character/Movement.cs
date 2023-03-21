@@ -1,7 +1,5 @@
-using System;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace ProjectZ.Code.Runtime.Character
 {
@@ -9,29 +7,24 @@ namespace ProjectZ.Code.Runtime.Character
     {
         #region FIELDS SERIALIZED
 
-        [Foldout("References")]
+        [Header("References"), HorizontalLine]
+
         [SerializeField] private CharacterBehaviour character;
-        [Foldout("References")]
         [SerializeField] private CharacterController characterController;
 
-        [Foldout("Acceleration")]
+        [Header("Acceleration"), HorizontalLine]
+
         [SerializeField] private float acceleration = 9.0f;
-        [Foldout("Acceleration")]
         [SerializeField] private float deceleration = 11.0f;
-        [Foldout("Speed")]
         [SerializeField] private float speedWalking = 4.0f;
-        [Foldout("Speed")]
         [SerializeField] private float speedRunning = 7.0f;
 
-        [Foldout("Jump")] 
+        [Header("Jump & Gravity"), HorizontalLine]
+
         [SerializeField] private float accelerationAir = 3.0f;
-        [Foldout("Jump")] 
         [SerializeField] private float gravityDescending = 25.0f;
-        [Foldout("Jump")]
         [SerializeField] private float gravityAscending = 18.0f;
-        [Foldout("Jump")] 
         [SerializeField] private float jumpHeight = 1.0f;
-        [Foldout("Jump")] 
         [SerializeField] private float groundStickyForce = 0.05f;
         
         #endregion

@@ -2,7 +2,7 @@ using System;
 
 namespace ProjectZ.Code.Runtime.Character
 {
-    public interface ICharacterAnimatorEventCaster
+    public interface ICharacterAnimatorEvents
     {
         public event Action EjectCasingEvent;
         public event Action<int> AmmunitionFillEvent; // int = amount

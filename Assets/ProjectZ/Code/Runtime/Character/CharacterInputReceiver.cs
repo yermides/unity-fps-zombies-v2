@@ -4,13 +4,15 @@ using UnityEngine.InputSystem;
 
 namespace ProjectZ.Code.Runtime.Character
 {
-    public class CharacterInputReader : MonoBehaviour
-        , ICharacterInputReader
+    public class CharacterInputReceiver : MonoBehaviour
+        , ICharacterInputEvents
         , CharacterInput.IPlayerActions
         , CharacterInput.IUIActions
     {
         private CharacterInput _characterInput;
 
+        #region EVENTS
+        
         public event Action<Vector2> MoveEvent;
         public event Action<Vector2> LookEvent;
         public event Action FireStartedEvent;
@@ -23,6 +25,8 @@ namespace ProjectZ.Code.Runtime.Character
         public event Action InteractPerformedEvent;
         public event Action<float> CyclePerformedEvent;
         public event Action ReloadPerformedEvent;
+        
+        #endregion
 
         #region UNITY
 

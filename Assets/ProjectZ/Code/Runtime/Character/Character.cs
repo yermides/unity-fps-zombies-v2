@@ -3,64 +3,73 @@ using NaughtyAttributes;
 using ProjectZ.Code.Runtime.Common;
 using ProjectZ.Code.Runtime.Utils.Extensions;
 using ProjectZ.Code.Runtime.Weapons;
-using ProjectZ.Code.Runtime.Zombie;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace ProjectZ.Code.Runtime.Character
 {
+    public struct CharacterArgs
+    {
+        public ICharacterAnimatorEvents characterAnimatorEvents;
+        public ICharacterInputEvents characterInputEvents;
+    }
+
     [SelectionBase]
     public sealed class Character : CharacterBehaviour
     {
         #region FIELDS SERIALIZED
         
-        [FormerlySerializedAs("inputReader")]
-        [Foldout("References"), Tooltip("Character Input Reader")]
-        [SerializeField] private CharacterInputReader characterInputReader;
+        [Header("References"), HorizontalLine]
 
-        [Foldout("References"), Tooltip("Character Health")]
+        [Tooltip("Character Health")]
         [SerializeField] private Health health;
         
-        [Foldout("References"), Tooltip("Character Movement")]
+        [Tooltip("Character Movement")]
         [SerializeField] private MovementBehaviour movement;
         
-        [Foldout("References"), Tooltip("Character Combat")]
+        [Tooltip("Character Combat")]
         [SerializeField] private CombatBehaviour combat;
         
-        [Foldout("References"), Tooltip("Character Interactions")]
+        [Tooltip("Character Interactions")]
         [SerializeField] private InteractorBehaviour interactor;
 
-        [Foldout("References"), Tooltip("Character IK")]
+        [Tooltip("Character IK")]
         [SerializeField] private CharacterKinematics characterKinematics;
         
-        [Foldout("References"), Tooltip("Weapon Inventory")]
+        [Tooltip("Weapon Inventory")]
         [SerializeField] private InventoryBehaviour inventory;
         
-        [Foldout("References"), Tooltip("World Camera")]
+        [Tooltip("World Camera")]
         [SerializeField] private new UnityEngine.Camera camera;
         
-        [Foldout("References"), Tooltip("Character Animator")]
+        [Tooltip("Character Animator")]
         [SerializeField] private Animator animator;
         
-        [Foldout("Values"), Tooltip("Player points")]
+        [Header("Values"), HorizontalLine]
+        
+        [Tooltip("Player points")]
         [SerializeField] private int points;
         
-        [Foldout("Values"), Tooltip("Zombie Attraction Weight"), Range(0, 1)]
+        [Tooltip("Zombie Attraction Weight"), Range(0, 1)]
         [SerializeField] private float attractionWeight = 1.0f ;
 
         #endregion
 
         #region FIELDS
 
+        // Injected event receivers
+        private ICharacterAnimatorEvents _characterAnimatorEvents;
+        private ICharacterInputEvents _characterInputEvents;
+        
+        // Input related
         private Vector2 _movementInput;
         private Vector2 _lookInput;
         private bool _isPressingButtonRun;
         private bool _isHoldingButtonFire;
+        
+        // Weapon related
         private WeaponBehaviour _equippedWeapon;
         private bool _isAttacking;
         private float _lastShotTime;
-        private ICharacterAnimatorEventCaster _characterAnimatorEventCaster;
 
         #endregion
         
@@ -74,26 +83,19 @@ namespace ProjectZ.Code.Runtime.Character
             interactor = GetComponent<InteractorBehaviour>();
             camera = GetComponentInChildren<UnityEngine.Camera>();
             characterKinematics = GetComponent<CharacterKinematics>();
-            animator = GetComponent<Animator>();
-        }
-
-        protected override void Awake()
-        {
-            health.OnDeath += Character_OnDeath;
+            animator = GetComponentInChildren<Animator>();
         }
 
         protected override void Start()
         {
+            // Initialize Inventory
             inventory.Init(0);
             _equippedWeapon = inventory.GetWeaponEquipped();
+            
+            // Subscribe to events
             SubscribeInputEvents();
             SubscribeAnimationEvents();
-        }
-
-        // TODO:
-        private void SubscribeAnimationEvents()
-        {
-            _characterAnimatorEventCaster.GrenadeEvent += delegate {  };
+            health.OnDeath += OnCharacterDeath;
         }
 
         protected override void Update()
@@ -119,11 +121,11 @@ namespace ProjectZ.Code.Runtime.Character
 
         protected override void OnDestroy()
         {
+            // Unsubscribe from all events
+            UnsubscribeAnimationEvents();
             UnsubscribeInputEvents();
-            health.OnDeath -= Character_OnDeath;
+            health.OnDeath -= OnCharacterDeath;
         }
-
-        private void Print(Vector2 moveDir) => print($"Character Dir: {moveDir}");
 
         #endregion
 
@@ -222,32 +224,7 @@ namespace ProjectZ.Code.Runtime.Character
                 _equippedWeapon = inventory.GetWeaponEquipped();
             }
         }
-
-        #endregion
-
-        #region FUNCTIONS
-
-        public void Configure(ICharacterAnimatorEventCaster characterAnimatorEventCaster)
-        {
-            _characterAnimatorEventCaster = characterAnimatorEventCaster;
-        }
-
-        private void SubscribeInputEvents()
-        {
-            characterInputReader.MoveEvent += OnMove;
-            characterInputReader.LookEvent += OnLook;
-            characterInputReader.FireStartedEvent += OnFireStarted;
-            characterInputReader.FirePerformedEvent += OnFirePerformed;
-            characterInputReader.FireCanceledEvent += OnFireCanceled;
-            characterInputReader.RunStartedEvent += OnRunStarted;
-            characterInputReader.RunCanceledEvent += OnRunCanceled;
-            characterInputReader.JumpPerformedEvent += OnJumpPerformed;
-            characterInputReader.MeleePerformedEvent += OnMeleePerformed;
-            characterInputReader.InteractPerformedEvent += OnInteractPerformed;
-            characterInputReader.CyclePerformedEvent += OnCyclePerformed;
-            characterInputReader.ReloadPerformedEvent += OnReloadPerformed;
-        }
-
+        
         private void OnReloadPerformed()
         {
             if (_equippedWeapon == null) return;
@@ -255,20 +232,143 @@ namespace ProjectZ.Code.Runtime.Character
             _equippedWeapon.Reload();
         }
 
+        #endregion
+
+        #region ANIMATION
+
+        private void OnSlideBack(int obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnAnimationEndedHolster()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnAnimationEndedInspect()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnAnimationEndedMelee()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnAnimationEndedGrenadeThrow()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnAnimationEndedReload()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnAnimationEndedBolt()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnSetActiveMagazine(int obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnGrenade()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnSetActiveKnife(int obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnAmmunitionFill(int obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnEjectCasing()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
+
+        #region FUNCTIONS
+
+        public void Configure(CharacterArgs args)
+        {
+            _characterAnimatorEvents = args.characterAnimatorEvents;
+            _characterInputEvents = args.characterInputEvents;
+        }
+
+        private void SubscribeInputEvents()
+        {
+            _characterInputEvents.MoveEvent += OnMove;
+            _characterInputEvents.LookEvent += OnLook;
+            _characterInputEvents.FireStartedEvent += OnFireStarted;
+            _characterInputEvents.FirePerformedEvent += OnFirePerformed;
+            _characterInputEvents.FireCanceledEvent += OnFireCanceled;
+            _characterInputEvents.RunStartedEvent += OnRunStarted;
+            _characterInputEvents.RunCanceledEvent += OnRunCanceled;
+            _characterInputEvents.JumpPerformedEvent += OnJumpPerformed;
+            _characterInputEvents.MeleePerformedEvent += OnMeleePerformed;
+            _characterInputEvents.InteractPerformedEvent += OnInteractPerformed;
+            _characterInputEvents.CyclePerformedEvent += OnCyclePerformed;
+            _characterInputEvents.ReloadPerformedEvent += OnReloadPerformed;
+        }
+        
+        private void SubscribeAnimationEvents()
+        {
+            // TODO: implement all event definitions
+            _characterAnimatorEvents.EjectCasingEvent += OnEjectCasing;
+            _characterAnimatorEvents.AmmunitionFillEvent += OnAmmunitionFill;
+            _characterAnimatorEvents.SetActiveKnifeEvent += OnSetActiveKnife;
+            _characterAnimatorEvents.GrenadeEvent += OnGrenade;
+            _characterAnimatorEvents.SetActiveMagazineEvent += OnSetActiveMagazine;
+            _characterAnimatorEvents.AnimationEndedBoltEvent += OnAnimationEndedBolt;
+            _characterAnimatorEvents.AnimationEndedReloadEvent += OnAnimationEndedReload;
+            _characterAnimatorEvents.AnimationEndedGrenadeThrowEvent += OnAnimationEndedGrenadeThrow;
+            _characterAnimatorEvents.AnimationEndedMeleeEvent += OnAnimationEndedMelee;
+            _characterAnimatorEvents.AnimationEndedInspectEvent += OnAnimationEndedInspect;
+            _characterAnimatorEvents.AnimationEndedHolsterEvent += OnAnimationEndedHolster;
+            _characterAnimatorEvents.SlideBackEvent += OnSlideBack;
+        }
+
+        private void UnsubscribeAnimationEvents()
+        {
+            _characterAnimatorEvents.EjectCasingEvent -= OnEjectCasing;
+            _characterAnimatorEvents.AmmunitionFillEvent -= OnAmmunitionFill;
+            _characterAnimatorEvents.SetActiveKnifeEvent -= OnSetActiveKnife;
+            _characterAnimatorEvents.GrenadeEvent -= OnGrenade;
+            _characterAnimatorEvents.SetActiveMagazineEvent -= OnSetActiveMagazine;
+            _characterAnimatorEvents.AnimationEndedBoltEvent -= OnAnimationEndedBolt;
+            _characterAnimatorEvents.AnimationEndedReloadEvent -= OnAnimationEndedReload;
+            _characterAnimatorEvents.AnimationEndedGrenadeThrowEvent -= OnAnimationEndedGrenadeThrow;
+            _characterAnimatorEvents.AnimationEndedMeleeEvent -= OnAnimationEndedMelee;
+            _characterAnimatorEvents.AnimationEndedInspectEvent -= OnAnimationEndedInspect;
+            _characterAnimatorEvents.AnimationEndedHolsterEvent -= OnAnimationEndedHolster;
+            _characterAnimatorEvents.SlideBackEvent -= OnSlideBack;
+        }
+
         private void UnsubscribeInputEvents()
         {
-            characterInputReader.MoveEvent -= OnMove;
-            characterInputReader.LookEvent -= OnLook;
-            characterInputReader.FireStartedEvent -= OnFireStarted;
-            characterInputReader.FirePerformedEvent -= OnFirePerformed;
-            characterInputReader.FireCanceledEvent -= OnFireCanceled;
-            characterInputReader.RunStartedEvent -= OnRunStarted;
-            characterInputReader.RunCanceledEvent -= OnRunCanceled;
-            characterInputReader.JumpPerformedEvent -= OnJumpPerformed;
-            characterInputReader.MeleePerformedEvent -= OnMeleePerformed;
-            characterInputReader.InteractPerformedEvent -= OnInteractPerformed;
-            characterInputReader.CyclePerformedEvent -= OnCyclePerformed;
-            characterInputReader.ReloadPerformedEvent -= OnReloadPerformed;
+            _characterInputEvents.MoveEvent -= OnMove;
+            _characterInputEvents.LookEvent -= OnLook;
+            _characterInputEvents.FireStartedEvent -= OnFireStarted;
+            _characterInputEvents.FirePerformedEvent -= OnFirePerformed;
+            _characterInputEvents.FireCanceledEvent -= OnFireCanceled;
+            _characterInputEvents.RunStartedEvent -= OnRunStarted;
+            _characterInputEvents.RunCanceledEvent -= OnRunCanceled;
+            _characterInputEvents.JumpPerformedEvent -= OnJumpPerformed;
+            _characterInputEvents.MeleePerformedEvent -= OnMeleePerformed;
+            _characterInputEvents.InteractPerformedEvent -= OnInteractPerformed;
+            _characterInputEvents.CyclePerformedEvent -= OnCyclePerformed;
+            _characterInputEvents.ReloadPerformedEvent -= OnReloadPerformed;
         }
 
         private void Fire()
@@ -277,7 +377,7 @@ namespace ProjectZ.Code.Runtime.Character
             _equippedWeapon.Fire();
         }
 
-        private void Character_OnDeath()
+        private void OnCharacterDeath()
         {
             // TODO: this should be managed inside Game class
 #if UNITY_STANDALONE

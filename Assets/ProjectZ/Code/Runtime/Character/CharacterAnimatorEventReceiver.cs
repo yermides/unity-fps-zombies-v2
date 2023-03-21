@@ -9,7 +9,7 @@ namespace ProjectZ.Code.Runtime.Character
 	/// </summary>
 	public class CharacterAnimatorEventReceiver
 		: CharacterAnimatorEventReceiverBehaviour
-		, ICharacterAnimatorEventCaster
+		, ICharacterAnimatorEvents
     {
 	    #region EVENTS
 	    

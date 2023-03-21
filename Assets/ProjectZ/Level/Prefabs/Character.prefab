@@ -225,7 +225,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4952449ed03e4867b15807a8a6419fec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterInputReader: {fileID: 6527334816763330560}
   health: {fileID: 1374334871}
   movement: {fileID: 6275460380078131192}
   combat: {fileID: 2058555693}
@@ -379,6 +378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 206748510001604955}
   animatorEventReceiver: {fileID: 289463498041357530}
+  inputEventReceiver: {fileID: 6527334816763330560}
 --- !u!1 &206748511178418113
 GameObject:
   m_ObjectHideFlags: 0

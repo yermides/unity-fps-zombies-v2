@@ -10,9 +10,7 @@ namespace ProjectZ.Code.Runtime.Character
     /// <br/>
     /// It is expected the player configures itself to the public events on it's awake/start/onenable.
     /// </summary>
-    ///
-
-    public interface ICharacterInputReader
+    public interface ICharacterInputEvents
     {
         public event Action<Vector2> MoveEvent;
         public event Action<Vector2> LookEvent;

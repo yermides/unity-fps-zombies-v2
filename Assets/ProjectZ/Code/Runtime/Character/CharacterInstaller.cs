@@ -1,22 +1,37 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace ProjectZ.Code.Runtime.Character
 {
     public class CharacterInstaller : MonoBehaviour
     {
+        [Header("Target"), HorizontalLine]
         [SerializeField] private Character character;
+        
+        [Header("Dependencies"), HorizontalLine]
         [SerializeField] private CharacterAnimatorEventReceiver animatorEventReceiver;
+        [SerializeField] private CharacterInputReceiver inputEventReceiver;
         
         private void Reset()
         {
             character = GetComponent<Character>();
             animatorEventReceiver = GetComponentInChildren<CharacterAnimatorEventReceiver>();
+            inputEventReceiver = GetComponent<CharacterInputReceiver>();
         }
 
         private void Awake()
         {
-            character.Configure(animatorEventReceiver);
+            var args = new CharacterArgs
+            {
+                characterAnimatorEvents = GetAnimatorEventReceiver(),
+                characterInputEvents = GetInputReader(),
+            };
+            
+            character.Configure(args);
         }
+
+        private ICharacterInputEvents GetInputReader() => inputEventReceiver;
+        private ICharacterAnimatorEvents GetAnimatorEventReceiver() => animatorEventReceiver;
     }
 }
