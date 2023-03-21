@@ -70,3 +70,14 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# End of Default Unity Gitignore
+
+# Rider
+.idea 
+
+# Exclude all 3rd Party assets, only keep main project folder
+/[Aa]ssets/*
+!/[Aa]ssets/ProjectZ
+
+/[Aa]ssets/ProjectZ/Art/*
