@@ -29,5 +29,8 @@ namespace ProjectZ.Code.Runtime.Utils
         public const string StateNameUnholster = "Unholster";
         public const string StateNameFireEmpty = "Fire Empty";
         public const string StateNameHolstered = "Holstered";
+        
+        // Weapon Animator
+        
     }
 }

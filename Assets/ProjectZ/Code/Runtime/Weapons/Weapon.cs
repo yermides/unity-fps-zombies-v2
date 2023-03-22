@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using ProjectZ.Code.Runtime.Character;
 using ProjectZ.Code.Runtime.Common;
+using ProjectZ.Code.Runtime.Utils;
 using UnityEngine;
 
 namespace ProjectZ.Code.Runtime.Weapons
@@ -43,8 +44,8 @@ namespace ProjectZ.Code.Runtime.Weapons
         #region FIELDS
 
         private CharacterBehaviour _characterBehaviour;
-        private int _ammunitionMagazineCurrent; // Bullets in magazine
-        private int _ammunitionInventoryCurrent; // Current bullets in inventory
+        [ShowNonSerializedField] private int _ammunitionMagazineCurrent; // Bullets in magazine
+        [ShowNonSerializedField] private int _ammunitionInventoryCurrent; // Current bullets in inventory
 
         #endregion
 
@@ -53,9 +54,10 @@ namespace ProjectZ.Code.Runtime.Weapons
         protected override void Awake()
         {
             _characterBehaviour = GetComponentInParent<CharacterBehaviour>();
+            // weaponAnimator = GetComponentInChildren<Animator>();
             
             // Fully reloaded on Awake
-            Refill();
+            FillAmmunition();
         }
 
         #endregion
@@ -84,6 +86,8 @@ namespace ProjectZ.Code.Runtime.Weapons
         {
             if (!HasAmmunition()) return;
             
+            weaponAnimator.Play(AnimatorHelper.StateNameFire, 0, 0.0f);
+            
             if (usesProjectiles)
             {
                 ShootProjectile();
@@ -98,8 +102,13 @@ namespace ProjectZ.Code.Runtime.Weapons
 
         public override void Reload()
         {
-            if (GetAmmunitionInventoryTotal() <= 0) return;
-            
+            var stateName = HasAmmunition() ? AnimatorHelper.StateNameReload : AnimatorHelper.StateNameReloadEmpty;
+            weaponAnimator.Play(stateName, 0, 0.0f);
+        }
+
+        // Refills current magazine by taking bullets from inventory
+        public override void FillMagazine()
+        {
             var firedRounds = GetAmmunitionTotal() - GetAmmunitionCurrent();
             var roundsToReload = Mathf.Min(GetAmmunitionInventoryCurrent(), firedRounds);
             
@@ -107,7 +116,8 @@ namespace ProjectZ.Code.Runtime.Weapons
             _ammunitionInventoryCurrent -= roundsToReload;
         }
 
-        public override void Refill()
+        // Refills all ammunition without animations
+        public override void FillAmmunition()
         {
             _ammunitionMagazineCurrent = ammunitionMagazineTotal;
             _ammunitionInventoryCurrent = ammunitionInventoryTotal;

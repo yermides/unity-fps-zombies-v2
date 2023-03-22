@@ -77,10 +77,19 @@ namespace ProjectZ.Code.Runtime.Character
         
         // Weapon related
         private WeaponBehaviour _equippedWeapon;
-        private bool _isAttacking;
         private float _lastShotTime;
+        
+        // States
+        private bool _isAttacking; // Melee
         private bool _isAiming;
         private bool _isRunning;
+        private bool _isReloading;
+        private bool _isHolstering;
+        
+        // Animator Layers
+        private int _layerOverlay;
+        private int _layerHolster;
+        private int _layerActions;
 
         #endregion
         
@@ -95,6 +104,13 @@ namespace ProjectZ.Code.Runtime.Character
             camera = GetComponentInChildren<UnityEngine.Camera>();
             characterKinematics = GetComponent<CharacterKinematics>();
             animator = GetComponentInChildren<Animator>();
+        }
+
+        protected override void Awake()
+        {
+            _layerOverlay = animator.GetLayerIndex(AnimatorHelper.LayerNameOverlay);
+            _layerHolster = animator.GetLayerIndex(AnimatorHelper.LayerNameHolster);
+            _layerActions = animator.GetLayerIndex(AnimatorHelper.LayerNameActions);
         }
 
         protected override void Start()
@@ -186,8 +202,18 @@ namespace ProjectZ.Code.Runtime.Character
                 _equippedWeapon = inventory.GetWeaponEquipped();
             }
         }
-        
-        private void OnReloadPerformed() => _equippedWeapon.Reload();
+
+        private void OnReloadPerformed()
+        {
+            // Play reload animation
+            var stateName = _equippedWeapon.HasAmmunition() ? AnimatorHelper.StateNameReload : AnimatorHelper.StateNameReloadEmpty;
+            animator.Play(stateName, _layerActions, 0.0f);
+            // _isReloading = true;
+            
+            // Reload the weapon
+            _equippedWeapon.Reload();
+        }
+
         private void OnAimStarted() => _isHoldingButtonAim = true;
         private void OnAimCanceled() => _isHoldingButtonAim = false;
 
@@ -205,7 +231,7 @@ namespace ProjectZ.Code.Runtime.Character
         private void OnSetActiveMagazine(int active) => throw new System.NotImplementedException();
         private void OnGrenade() => throw new System.NotImplementedException();
         private void OnSetActiveKnife(int active) => throw new System.NotImplementedException();
-        private void OnAmmunitionFill(int amount) => throw new System.NotImplementedException();
+        private void OnAmmunitionFill(int amount) => _equippedWeapon.FillMagazine();
         private void OnEjectCasing() => throw new System.NotImplementedException();
 
         #endregion
@@ -291,6 +317,7 @@ namespace ProjectZ.Code.Runtime.Character
         {
             _lastShotTime = Time.time;
             _equippedWeapon.Fire();
+            animator.CrossFade(AnimatorHelper.StateNameFire, 0.05f, _layerOverlay, 0);
         }
         
         private void UpdateFire()

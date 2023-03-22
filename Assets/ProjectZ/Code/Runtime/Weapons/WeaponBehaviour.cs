@@ -33,8 +33,8 @@ namespace ProjectZ.Code.Runtime.Weapons
         
         public abstract void Fire();
         public abstract void Reload();
-
-        public abstract void Refill();
+        public abstract void FillMagazine();
+        public abstract void FillAmmunition();
 
         #endregion
     }
