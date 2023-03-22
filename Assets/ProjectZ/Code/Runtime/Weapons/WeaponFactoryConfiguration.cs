@@ -19,7 +19,7 @@ namespace ProjectZ.Code.Runtime.Weapons
             }
         }
 
-        public WeaponBehaviour GetWeaponById(WeaponID id)
+        public WeaponBehaviour GetWeaponByID(WeaponID id)
         {
             return _idToWeapons[id];
         }

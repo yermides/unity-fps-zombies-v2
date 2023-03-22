@@ -3,13 +3,12 @@ using UnityEngine;
 
 namespace ProjectZ.Code.Runtime.Zombie.Spawner
 {
-    [CreateAssetMenu(menuName = "Create RoundDataFactoryImpl", fileName = "RoundDataFactoryImpl", order = 0)]
+    [CreateAssetMenu(menuName = "RoundDataFactory", fileName = "ProjectZ/Rounds/RoundDataFactoryImpl", order = 0)]
     public sealed class RoundDataFactoryImpl : RoundDataFactoryBase
     {
         [CurveRange(0,0,1,10)]
         [SerializeField] private AnimationCurve zombieSpawnDelaySeconds;
         
-        // [SerializeField] private ParticleSystem.MinMaxCurve intervalCurve;
         private int GetZombieCount(int round, int players)
         {
             int zombiesToSpawn = 24;
@@ -52,16 +51,7 @@ namespace ProjectZ.Code.Runtime.Zombie.Spawner
             var curveValueNormalized = ((float)round) / 100.0f;
             return zombieSpawnDelaySeconds.Evaluate(curveValueNormalized);
         }
-
-        private Vector2 GetSecondsToSpawnRange(int round, int players)
-        {
-            return Vector2.zero;
-            
-            // var curveValueNormalized = ((float)round) / 100.0f;
-            // var evaluatedValue = intervalCurve.Evaluate(curveValueNormalized);
-            // return new Vector2(0.8f, 1.2f) * evaluatedValue;
-        }
-
+        
         public override RoundData CreateRoundData(int round, int players = 1)
         {
             return new RoundData 
@@ -69,7 +59,6 @@ namespace ProjectZ.Code.Runtime.Zombie.Spawner
                 ZombieCount = GetZombieCount(round, players), 
                 ZombieHealth = GetZombieHealth(round, players),
                 SecondsToSpawn = GetSecondsToSpawn(round),
-                // SecondsToSpawnRange = GetSecondsToSpawnRange(round, players),
             };
         }
     }
