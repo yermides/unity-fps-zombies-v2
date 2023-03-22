@@ -233,6 +233,8 @@ MonoBehaviour:
   inventory: {fileID: 1668713212165838155}
   camera: {fileID: 206748511178418127}
   animator: {fileID: 5380510001517315124}
+  dampTimeLocomotion: 0.15
+  dampTimeAiming: 0.3
   points: 500
   attractionWeight: 1
 --- !u!114 &1668713212165838155
@@ -700,7 +702,6 @@ GameObject:
   m_Component:
   - component: {fileID: 554146559644618452}
   - component: {fileID: 5380510001517315124}
-  - component: {fileID: 6095760552626413636}
   - component: {fileID: 289463498041357530}
   m_Layer: 8
   m_Name: SK_FP_CH_Default_Root
@@ -746,18 +747,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6095760552626413636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 683796541223850948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0adbdf8319816044786da04710105e40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &289463498041357530
 MonoBehaviour:
   m_ObjectHideFlags: 0

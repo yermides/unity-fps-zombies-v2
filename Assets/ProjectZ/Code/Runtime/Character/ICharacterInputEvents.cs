@@ -24,5 +24,7 @@ namespace ProjectZ.Code.Runtime.Character
         public event Action InteractPerformedEvent;
         public event Action<float> CyclePerformedEvent;
         public event Action ReloadPerformedEvent;
+        public event Action AimStartedEvent;
+        public event Action AimCanceledEvent;
     }
 }

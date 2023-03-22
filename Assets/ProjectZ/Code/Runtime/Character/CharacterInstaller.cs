@@ -11,13 +11,13 @@ namespace ProjectZ.Code.Runtime.Character
         
         [Header("Dependencies"), HorizontalLine]
         [SerializeField] private CharacterAnimatorEventReceiver animatorEventReceiver;
-        [SerializeField] private CharacterInputReceiver inputEventReceiver;
+        [SerializeField] private CharacterInputEventReceiver inputEventReceiver;
         
         private void Reset()
         {
             character = GetComponent<Character>();
             animatorEventReceiver = GetComponentInChildren<CharacterAnimatorEventReceiver>();
-            inputEventReceiver = GetComponent<CharacterInputReceiver>();
+            inputEventReceiver = GetComponent<CharacterInputEventReceiver>();
         }
 
         private void Awake()

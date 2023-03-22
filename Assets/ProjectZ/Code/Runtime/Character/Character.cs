@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using NaughtyAttributes;
 using ProjectZ.Code.Runtime.Common;
+using ProjectZ.Code.Runtime.Utils;
 using ProjectZ.Code.Runtime.Utils.Extensions;
 using ProjectZ.Code.Runtime.Weapons;
 using UnityEngine;
@@ -46,6 +48,12 @@ namespace ProjectZ.Code.Runtime.Character
         
         [Header("Values"), HorizontalLine]
         
+        [Tooltip("Determines how smooth the locomotion blend space is.")]
+        [SerializeField] private float dampTimeLocomotion = 0.15f;
+
+        [Tooltip("How smoothly we play aiming transitions. Beware that this affects lots of things!")]
+        [SerializeField] private float dampTimeAiming = 0.3f;
+        
         [Tooltip("Player points")]
         [SerializeField] private int points;
         
@@ -63,13 +71,16 @@ namespace ProjectZ.Code.Runtime.Character
         // Input related
         private Vector2 _movementInput;
         private Vector2 _lookInput;
-        private bool _isPressingButtonRun;
         private bool _isHoldingButtonFire;
+        private bool _isHoldingButtonAim;
+        private bool _isHoldingButtonRun;
         
         // Weapon related
         private WeaponBehaviour _equippedWeapon;
         private bool _isAttacking;
         private float _lastShotTime;
+        private bool _isAiming;
+        private bool _isRunning;
 
         #endregion
         
@@ -100,18 +111,13 @@ namespace ProjectZ.Code.Runtime.Character
 
         protected override void Update()
         {
-            // Update Firing
-            if (!_isHoldingButtonFire) return;
+            // Match Aim
+            _isAiming = _isHoldingButtonAim /* && CanAim() */;
+            // Match Run
+            _isRunning = _isHoldingButtonRun /* && CanRun() */;
             
-            // TODO: Check for rounds and if is automatic
-            if (_equippedWeapon.IsAutomatic())
-            {
-                // Has fire rate passed.
-                if (Time.time - _lastShotTime > _equippedWeapon.GetFireInterval())
-                {
-                    Fire();
-                }
-            }
+            UpdateFire();
+            UpdateAnimator();
         }
 
         protected override void LateUpdate()
@@ -132,84 +138,40 @@ namespace ProjectZ.Code.Runtime.Character
         #region GETTERS
 
         public override UnityEngine.Camera GetWorldCamera() => camera;
-
-        public override bool IsRunning() => _isPressingButtonRun;
-
-        public override bool IsAiming()
-        {
-            throw new System.NotImplementedException();
-        }
-
+        public override bool IsRunning() => _isHoldingButtonRun;
+        public override bool IsAiming() => throw new System.NotImplementedException();
         public override Vector2 GetMovementInput() => _movementInput;
         public override Vector2 GetLookInput() => _lookInput;
         public override bool IsCursorLocked() => true;
-        // Cursor.lockState == CursorLockMode.Locked;
         public override Team GetTeam() => health.GetTeam();
-
         public override int GetPoints() => points;
-
         public override void AddPoints(int pts) => points += pts;
-        
         public override void RemovePoints(int pts) => points -= pts;
 
         #endregion
 
         #region INPUT
 
-        private void OnMove(Vector2 value)
-        {
-            _movementInput = value;
-        }
+        private void OnMove(Vector2 value) => _movementInput = value;
+        private void OnLook(Vector2 value) => _lookInput = value;
+        private void OnFireStarted() => _isHoldingButtonFire = true;
         
-        private void OnLook(Vector2 value)
-        {
-            _lookInput = value;
-        }
-
-        private void OnFireStarted()
-        {
-            _isHoldingButtonFire = true;
-        }
-
+        // Firing On-click for both auto and semi-auto weapons
         private void OnFirePerformed()
         {
-            // Fire for semi-auto weapons
             if (Time.time - _lastShotTime > _equippedWeapon.GetFireInterval())
             {
                 Fire();
             }
         }
         
-        private void OnFireCanceled()
-        {
-            _isHoldingButtonFire = false;
-        }
+        private void OnFireCanceled() => _isHoldingButtonFire = false;
+        private void OnRunStarted() => _isHoldingButtonRun = true;
+        private void OnRunCanceled() => _isHoldingButtonRun = false;
+        private void OnJumpPerformed() => movement.Jump();
+        private void OnMeleePerformed() => DoAttack().WrapErrors();
+        private void OnInteractPerformed() => interactor.DoInteract();
 
-        private void OnRunStarted()
-        {
-            _isPressingButtonRun = true;
-        }
-
-        private void OnRunCanceled()
-        {
-            _isPressingButtonRun = false;
-        }
-
-        private void OnJumpPerformed()
-        {
-            movement.Jump();
-        }
-
-        private void OnMeleePerformed()
-        {
-            DoAttack().WrapErrors();
-        }
-
-        private void OnInteractPerformed()
-        {
-            interactor.DoInteract();
-        }
-        
         private void OnCyclePerformed(float value)
         {
             int indexNext = value > 0 ? inventory.GetNextIndex() : inventory.GetPreviousIndex();
@@ -225,76 +187,26 @@ namespace ProjectZ.Code.Runtime.Character
             }
         }
         
-        private void OnReloadPerformed()
-        {
-            if (_equippedWeapon == null) return;
-            
-            _equippedWeapon.Reload();
-        }
+        private void OnReloadPerformed() => _equippedWeapon.Reload();
+        private void OnAimStarted() => _isHoldingButtonAim = true;
+        private void OnAimCanceled() => _isHoldingButtonAim = false;
 
         #endregion
 
         #region ANIMATION
 
-        private void OnSlideBack(int obj)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnAnimationEndedHolster()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnAnimationEndedInspect()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnAnimationEndedMelee()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnAnimationEndedGrenadeThrow()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnAnimationEndedReload()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnAnimationEndedBolt()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnSetActiveMagazine(int obj)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnGrenade()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnSetActiveKnife(int obj)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnAmmunitionFill(int obj)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void OnEjectCasing()
-        {
-            throw new System.NotImplementedException();
-        }
+        private void OnSlideBack(int obj) => throw new System.NotImplementedException();
+        private void OnAnimationEndedHolster() => throw new System.NotImplementedException();
+        private void OnAnimationEndedInspect() => throw new System.NotImplementedException();
+        private void OnAnimationEndedMelee() => throw new System.NotImplementedException();
+        private void OnAnimationEndedGrenadeThrow() => throw new System.NotImplementedException();
+        private void OnAnimationEndedReload() => throw new System.NotImplementedException();
+        private void OnAnimationEndedBolt() => throw new System.NotImplementedException();
+        private void OnSetActiveMagazine(int active) => throw new System.NotImplementedException();
+        private void OnGrenade() => throw new System.NotImplementedException();
+        private void OnSetActiveKnife(int active) => throw new System.NotImplementedException();
+        private void OnAmmunitionFill(int amount) => throw new System.NotImplementedException();
+        private void OnEjectCasing() => throw new System.NotImplementedException();
 
         #endregion
 
@@ -320,6 +232,26 @@ namespace ProjectZ.Code.Runtime.Character
             _characterInputEvents.InteractPerformedEvent += OnInteractPerformed;
             _characterInputEvents.CyclePerformedEvent += OnCyclePerformed;
             _characterInputEvents.ReloadPerformedEvent += OnReloadPerformed;
+            _characterInputEvents.AimStartedEvent += OnAimStarted;
+            _characterInputEvents.AimCanceledEvent += OnAimCanceled;
+        }
+
+        private void UnsubscribeInputEvents()
+        {
+            _characterInputEvents.MoveEvent -= OnMove;
+            _characterInputEvents.LookEvent -= OnLook;
+            _characterInputEvents.FireStartedEvent -= OnFireStarted;
+            _characterInputEvents.FirePerformedEvent -= OnFirePerformed;
+            _characterInputEvents.FireCanceledEvent -= OnFireCanceled;
+            _characterInputEvents.RunStartedEvent -= OnRunStarted;
+            _characterInputEvents.RunCanceledEvent -= OnRunCanceled;
+            _characterInputEvents.JumpPerformedEvent -= OnJumpPerformed;
+            _characterInputEvents.MeleePerformedEvent -= OnMeleePerformed;
+            _characterInputEvents.InteractPerformedEvent -= OnInteractPerformed;
+            _characterInputEvents.CyclePerformedEvent -= OnCyclePerformed;
+            _characterInputEvents.ReloadPerformedEvent -= OnReloadPerformed;
+            _characterInputEvents.AimStartedEvent -= OnAimStarted;
+            _characterInputEvents.AimCanceledEvent -= OnAimCanceled;
         }
         
         private void SubscribeAnimationEvents()
@@ -355,26 +287,44 @@ namespace ProjectZ.Code.Runtime.Character
             _characterAnimatorEvents.SlideBackEvent -= OnSlideBack;
         }
 
-        private void UnsubscribeInputEvents()
-        {
-            _characterInputEvents.MoveEvent -= OnMove;
-            _characterInputEvents.LookEvent -= OnLook;
-            _characterInputEvents.FireStartedEvent -= OnFireStarted;
-            _characterInputEvents.FirePerformedEvent -= OnFirePerformed;
-            _characterInputEvents.FireCanceledEvent -= OnFireCanceled;
-            _characterInputEvents.RunStartedEvent -= OnRunStarted;
-            _characterInputEvents.RunCanceledEvent -= OnRunCanceled;
-            _characterInputEvents.JumpPerformedEvent -= OnJumpPerformed;
-            _characterInputEvents.MeleePerformedEvent -= OnMeleePerformed;
-            _characterInputEvents.InteractPerformedEvent -= OnInteractPerformed;
-            _characterInputEvents.CyclePerformedEvent -= OnCyclePerformed;
-            _characterInputEvents.ReloadPerformedEvent -= OnReloadPerformed;
-        }
-
         private void Fire()
         {
             _lastShotTime = Time.time;
             _equippedWeapon.Fire();
+        }
+        
+        private void UpdateFire()
+        {
+            // Update Firing
+            if (!_isHoldingButtonFire) return;
+
+            // TODO: Check for rounds and if is automatic
+            if (_equippedWeapon.IsAutomatic())
+            {
+                // Has fire rate passed.
+                if (Time.time - _lastShotTime > _equippedWeapon.GetFireInterval())
+                {
+                    Fire();
+                }
+            }
+        }
+        
+        private void UpdateAnimator()
+        {
+            animator.SetFloat(
+                AnimatorHelper.HashMovement, 
+                Mathf.Clamp01(Mathf.Abs(_movementInput.x) + Mathf.Abs(_movementInput.y)), 
+                dampTimeLocomotion, 
+                Time.deltaTime);
+            
+            animator.SetFloat(
+                AnimatorHelper.HashAimingAlpha, 
+                Convert.ToSingle(_isAiming), 
+                0.25f / 1.0f * dampTimeAiming, 
+                Time.deltaTime);
+
+            animator.SetBool(AnimatorHelper.HashAiming, _isAiming);
+            animator.SetBool(AnimatorHelper.HashRunning, _isRunning);
         }
 
         private void OnCharacterDeath()

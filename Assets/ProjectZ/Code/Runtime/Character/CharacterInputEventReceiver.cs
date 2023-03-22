@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace ProjectZ.Code.Runtime.Character
 {
-    public class CharacterInputReceiver : MonoBehaviour
+    public class CharacterInputEventReceiver : MonoBehaviour
         , ICharacterInputEvents
         , CharacterInput.IPlayerActions
         , CharacterInput.IUIActions
@@ -25,7 +25,9 @@ namespace ProjectZ.Code.Runtime.Character
         public event Action InteractPerformedEvent;
         public event Action<float> CyclePerformedEvent;
         public event Action ReloadPerformedEvent;
-        
+        public event Action AimStartedEvent;
+        public event Action AimCanceledEvent;
+
         #endregion
 
         #region UNITY
@@ -168,6 +170,20 @@ namespace ProjectZ.Code.Runtime.Character
             if (context.phase == InputActionPhase.Performed)
             {
                 ReloadPerformedEvent?.Invoke();
+            }
+        }
+
+        public void OnAim(InputAction.CallbackContext context)
+        {
+            var phase = context.phase;
+            
+            if (phase == InputActionPhase.Started)
+            {
+                AimStartedEvent?.Invoke();
+            }
+            else if (phase == InputActionPhase.Canceled)
+            {
+                AimCanceledEvent?.Invoke();
             }
         }
 

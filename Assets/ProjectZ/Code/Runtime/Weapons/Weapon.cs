@@ -1,4 +1,3 @@
-using System;
 using NaughtyAttributes;
 using ProjectZ.Code.Runtime.Character;
 using ProjectZ.Code.Runtime.Common;
@@ -10,23 +9,22 @@ namespace ProjectZ.Code.Runtime.Weapons
     {
         #region FIELDS SERIALIZED
         
-        [SerializeField] private WeaponID weaponID;
-        
-        [Foldout("References")]
-        [SerializeField] private Transform tipPoint;
+        [Header("References"), HorizontalLine]
 
-        [Foldout("Values")] 
+        [SerializeField] private WeaponID weaponID;
+        [SerializeField] private Transform tipPoint;
+        [SerializeField] private Animator weaponAnimator;
+        [Tooltip("The AnimatorController the Character will use with this weapon")]
+        [SerializeField] private RuntimeAnimatorController characterAnimatorController;
+
+        [Header("Values"), HorizontalLine]
+
         [Tooltip("Rate of fire, in rounds per minute")]
         [SerializeField] private float rateOfFire = 700.0f;
-        [Foldout("Values")] 
         [SerializeField] private float damage = 30.0f;
-        [Foldout("Values")] 
         [SerializeField] private bool isAutomatic;
-        [Foldout("Values")]
         [SerializeField] private bool usesProjectiles; // Hitscan or projectile-based
-        [Foldout("Values")]
         [SerializeField] private int ammunitionMagazineTotal = 30; // Max bullets in magazine
-        [Foldout("Values")]
         [SerializeField] private int ammunitionInventoryTotal = 150; // Max bullets in inventory
         
         [Foldout("Raycast")]
