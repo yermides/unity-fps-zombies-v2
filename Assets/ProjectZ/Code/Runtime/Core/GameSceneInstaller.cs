@@ -1,4 +1,5 @@
 using System;
+using ProjectZ.Code.Runtime.Common.Commands;
 using ProjectZ.Code.Runtime.Core.Audio;
 using ProjectZ.Code.Runtime.Patterns;
 using ProjectZ.Code.Runtime.Patterns.Events;
@@ -43,16 +44,8 @@ namespace ProjectZ.Code.Runtime.Core
             Cursor.visible = !cursorLocked;
             // Update cursor lock state
             Cursor.lockState = cursorLocked ? CursorLockMode.Locked : CursorLockMode.None;
-            
-            // Play Clip as test, TODO: abstract as command
-            { // new PlayOneShotClipCommand
-                var locator = ServiceLocator.Instance;
-                var factory = locator.GetService<AudioClipFactory>();
-                var clip = factory.Get(clipToPlayAtStart);
-                // Debug.Log(clip.name);
-                var service = locator.GetService<IAudioManagerService>();
-                service.PlayOneShot(clip, new AudioSettings(1.0f, 0.0f, true));
-            }
+
+            new PlayOneShotClipCommand(clipToPlayAtStart, new AudioSettings(1.0f, 0.0f, true)).Execute();
         }
 
         private void OnDestroy()
