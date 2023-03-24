@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using NaughtyAttributes;
+using ProjectZ.Code.Runtime.Animation;
 using ProjectZ.Code.Runtime.Common;
 using ProjectZ.Code.Runtime.Utils;
 using ProjectZ.Code.Runtime.Utils.Extensions;
@@ -108,9 +109,18 @@ namespace ProjectZ.Code.Runtime.Character
 
         protected override void Awake()
         {
+            // Store the indexes of the animation layers
             _layerOverlay = animator.GetLayerIndex(AnimatorHelper.LayerNameOverlay);
             _layerHolster = animator.GetLayerIndex(AnimatorHelper.LayerNameHolster);
             _layerActions = animator.GetLayerIndex(AnimatorHelper.LayerNameActions);
+
+            // Configure the State Machine Behaviour dependencies
+            var behaviours = animator.GetBehaviours<PlaySoundCharacterBehaviour>();
+            
+            foreach (var playSoundCharacterBehaviour in behaviours)
+            {
+                playSoundCharacterBehaviour.Configure(this);
+            }
         }
 
         protected override void Start()
@@ -160,6 +170,7 @@ namespace ProjectZ.Code.Runtime.Character
         public override Vector2 GetLookInput() => _lookInput;
         public override bool IsCursorLocked() => true;
         public override Team GetTeam() => health.GetTeam();
+        public override WeaponBehaviour GetEquippedWeapon() => _equippedWeapon;
         public override int GetPoints() => points;
         public override void AddPoints(int pts) => points += pts;
         public override void RemovePoints(int pts) => points -= pts;

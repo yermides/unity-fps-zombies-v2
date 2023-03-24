@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace ProjectZ.Code.Runtime.Core.Audio
@@ -7,7 +8,8 @@ namespace ProjectZ.Code.Runtime.Core.Audio
     /// This makes it so we don't cry if the AudioClip gets deleted
     /// or we want to replace it across the board we just change the reference this object holds
     /// </summary>
-    [CreateAssetMenu(fileName = "AudioClipConfiguration", menuName = "ProjectZ/Audio/AudioClipConfiguration", order = 0)]
+    [CreateAssetMenu(fileName = "AudioClipConfiguration", menuName = "ProjectZ/Audio/AudioClipConfiguration",
+        order = 0)]
     public class AudioClipConfiguration : ScriptableObject
     {
         [SerializeField] private AudioClipID audioClipID;
@@ -15,5 +17,10 @@ namespace ProjectZ.Code.Runtime.Core.Audio
 
         public AudioClipID GetClipID() => audioClipID;
         public AudioClip GetAudioClip() => audioClip;
+
+#if UNITY_EDITOR
+        public void SetClipID(AudioClipID id) => audioClipID = id;
+        public void SetAudioClip(AudioClip clip) => audioClip = clip;
+#endif
     }
 }

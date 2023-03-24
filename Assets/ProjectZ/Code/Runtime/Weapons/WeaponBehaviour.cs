@@ -1,3 +1,4 @@
+using ProjectZ.Code.Runtime.Core.Audio;
 using UnityEngine;
 
 namespace ProjectZ.Code.Runtime.Weapons
@@ -26,6 +27,13 @@ namespace ProjectZ.Code.Runtime.Weapons
         public abstract float GetRateOfFire();
 
         public float GetFireInterval() => 60.0f / GetRateOfFire();
+
+        public abstract AudioClipID GetAudioClipHolster();
+        public abstract AudioClipID GetAudioClipUnholster();
+        public abstract AudioClipID GetAudioClipReload();
+        public abstract AudioClipID GetAudioClipReloadEmpty();
+        public abstract AudioClipID GetAudioClipFire();
+        public abstract AudioClipID GetAudioClipFireEmpty();
 
         #endregion
 

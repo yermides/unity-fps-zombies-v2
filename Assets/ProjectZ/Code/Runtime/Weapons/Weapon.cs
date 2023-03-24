@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using ProjectZ.Code.Runtime.Character;
 using ProjectZ.Code.Runtime.Common;
+using ProjectZ.Code.Runtime.Core.Audio;
 using ProjectZ.Code.Runtime.Utils;
 using UnityEngine;
 
@@ -24,19 +25,27 @@ namespace ProjectZ.Code.Runtime.Weapons
         [SerializeField] private float rateOfFire = 700.0f;
         [SerializeField] private float damage = 30.0f;
         [SerializeField] private bool isAutomatic;
-        [SerializeField] private bool usesProjectiles; // Hitscan or projectile-based
         [SerializeField] private int ammunitionMagazineTotal = 30; // Max bullets in magazine
         [SerializeField] private int ammunitionInventoryTotal = 150; // Max bullets in inventory
+
+        [Header("Audio Clips"), HorizontalLine] 
+        [SerializeField] private AudioClipID audioClipHolster;
+        [SerializeField] private AudioClipID audioClipUnholster;
+        [SerializeField] private AudioClipID audioClipReload;
+        [SerializeField] private AudioClipID audioClipReloadEmpty;
+        [SerializeField] private AudioClipID audioClipFire;
+        [SerializeField] private AudioClipID audioClipFireEmpty;
         
-        [Foldout("Raycast")]
+        [Header("Additional Shooting Data"), HorizontalLine] 
+        [SerializeField] private bool usesProjectiles; // Hitscan or projectile-based
+        
         [SerializeField, HideIf(nameof(usesProjectiles))] private LayerMask raycastLayerMask;
-        
         // Projectiles' layer should be configured inside the prefab in reality
-        [Foldout("Projectiles"), ShowIf(nameof(usesProjectiles)), Layer]
+        [ShowIf(nameof(usesProjectiles)), Layer]
         [SerializeField] private int projectileLayerIndex;
-        [Foldout("Projectiles"), ShowIf(nameof(usesProjectiles))]
+        [ShowIf(nameof(usesProjectiles))]
         [SerializeField] private ProjectileBehaviour projectilePrefab;
-        [Foldout("Projectiles"), ShowIf(nameof(usesProjectiles))]
+        [ShowIf(nameof(usesProjectiles))]
         [SerializeField] private float projectileImpulse;
         
         #endregion
@@ -77,6 +86,35 @@ namespace ProjectZ.Code.Runtime.Weapons
             GetAmmunitionInventoryCurrent() == GetAmmunitionInventoryTotal();
         
         public override float GetRateOfFire() => rateOfFire;
+        public override AudioClipID GetAudioClipHolster()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override AudioClipID GetAudioClipUnholster()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override AudioClipID GetAudioClipReload()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override AudioClipID GetAudioClipReloadEmpty()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override AudioClipID GetAudioClipFire()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override AudioClipID GetAudioClipFireEmpty()
+        {
+            throw new System.NotImplementedException();
+        }
 
         #endregion
 

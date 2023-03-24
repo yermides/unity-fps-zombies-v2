@@ -9,11 +9,13 @@ namespace ProjectZ.Code.Runtime.Common.Commands
     {
         private readonly AudioClipID _clipID;
         private readonly AudioSettings _audioSettings;
+        private readonly float _delay;
 
-        public PlayOneShotClipCommand(AudioClipID clipID, AudioSettings audioSettings = default)
+        public PlayOneShotClipCommand(AudioClipID clipID, AudioSettings audioSettings = default, float delay = 0.0f)
         {
             _clipID = clipID;
             _audioSettings = audioSettings;
+            _delay = delay;
         }
         
         public Task Execute()
@@ -22,7 +24,16 @@ namespace ProjectZ.Code.Runtime.Common.Commands
             var factory = locator.GetService<AudioClipFactory>();
             var clip = factory.Get(_clipID);
             var service = locator.GetService<IAudioManagerService>();
-            service.PlayOneShot(clip, _audioSettings);
+
+            if (_delay > 0.0f)
+            {
+                service.PlayOneShotDelayed(clip, _audioSettings, _delay);
+            }
+            else
+            {
+                service.PlayOneShot(clip, _audioSettings);
+            }
+
             return Task.CompletedTask;
         }
     }

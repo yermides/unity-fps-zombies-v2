@@ -1,4 +1,5 @@
 using ProjectZ.Code.Runtime.Common;
+using ProjectZ.Code.Runtime.Weapons;
 using UnityEngine;
 
 namespace ProjectZ.Code.Runtime.Character
@@ -24,6 +25,7 @@ namespace ProjectZ.Code.Runtime.Character
         public abstract Vector2 GetLookInput();
         public abstract bool IsCursorLocked();
         public abstract Team GetTeam();
+        public abstract WeaponBehaviour GetEquippedWeapon();
 
         #endregion
 

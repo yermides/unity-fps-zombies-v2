@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91fb2e7beb7943539db3c8a36d303a3a, type: 3}
-  m_Name: AudioClipFactoryConfiguration
+  m_Script: {fileID: 11500000, guid: 59f30e055d574fed99ee4384c02d16cc, type: 3}
+  m_Name: ACC_CLIP_Fire003
   m_EditorClassIdentifier: 
-  audioClipProxies:
-  - {fileID: 11400000, guid: d0089508ef9c2594facc3a3a4da3c934, type: 2}
+  audioClipID: {fileID: 11400000, guid: 1b476d3067be1b341a49710392c80727, type: 2}
+  audioClip: {fileID: 8300000, guid: 0addcc409a57b4a43b86a3d2310ac5b4, type: 3}
