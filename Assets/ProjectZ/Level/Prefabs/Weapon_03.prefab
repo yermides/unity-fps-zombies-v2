@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 317770825578458694}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: revolver_rig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,12 +80,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponID: {fileID: 11400000, guid: e816eae84ad91d44b9b53b7143ffb3a4, type: 2}
   tipPoint: {fileID: 2837755937897101637}
+  weaponAnimator: {fileID: 0}
+  characterAnimatorController: {fileID: 0}
   rateOfFire: 700
   damage: 30
   isAutomatic: 0
-  usesProjectiles: 1
   ammunitionMagazineTotal: 8
   ammunitionInventoryTotal: 80
+  audioClipHolster: {fileID: 0}
+  audioClipUnholster: {fileID: 0}
+  audioClipReload: {fileID: 0}
+  audioClipReloadEmpty: {fileID: 0}
+  audioClipFire: {fileID: 0}
+  audioClipFireEmpty: {fileID: 0}
+  usesProjectiles: 1
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -102,7 +110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2463021949258862584}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_4 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7836354101730430071}
   - component: {fileID: 5018329145793031050}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7929578226396174518}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: reload_drm_bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +270,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1637464461589423279}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: drum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7063277745477252009}
   - component: {fileID: 8286135950317750213}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: revolver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -401,7 +409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1962605732953001774}
   - component: {fileID: 8076602248485649569}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: suppressor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,7 +506,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3584773142352088524}
   - component: {fileID: 5529351056234805027}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -595,7 +603,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4617755621111253734}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_5 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -627,7 +635,7 @@ GameObject:
   m_Component:
   - component: {fileID: 212471255095105728}
   - component: {fileID: 9106438997859772507}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: head.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -724,7 +732,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8069838666357698902}
   - component: {fileID: 5865682632859835618}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -821,7 +829,7 @@ GameObject:
   m_Component:
   - component: {fileID: 80257529614053631}
   - component: {fileID: 8040933102834851205}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: revolver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -875,7 +883,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6734992034455234915}
   - component: {fileID: 6784299096596494673}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -972,7 +980,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 230209076997375683}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_6 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1004,7 +1012,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4053755864352266929}
   - component: {fileID: 6357014636578939617}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: head.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1100,7 +1108,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3267698482977879601}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: drum_open
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1163,7 +1171,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3695942249615013243}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: main
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1198,7 +1206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4235290605444680676}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_2 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1229,7 +1237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 895174646837436387}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_1 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1261,7 +1269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5417371974519344437}
   - component: {fileID: 8862091149910464601}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: head.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1358,7 +1366,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6737149432165305025}
   - component: {fileID: 7935937844083087659}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1456,7 +1464,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5935854859187772583}
   - component: {fileID: 6915927939488340155}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1552,7 +1560,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2195137586751497955}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: reload_trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1584,7 +1592,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8164952374630322817}
   - component: {fileID: 404400729005685861}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: scope_tex
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1681,7 +1689,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6229698836025676431}
   - component: {fileID: 1067592102307983586}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: head.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1778,7 +1786,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4066512925358019007}
   - component: {fileID: 2734567205179269754}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: camera_renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1875,7 +1883,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2948173621673910849}
   - component: {fileID: 5196759685546213993}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullets_holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1974,7 +1982,7 @@ GameObject:
   - component: {fileID: 4717847122488631379}
   - component: {fileID: 1624562167732061505}
   - component: {fileID: 1939517351585923886}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bullets_in_drum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2062,7 +2070,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8585494349753912958}
   - component: {fileID: 1739451275024413645}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2159,7 +2167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3288890955852485477}
   - component: {fileID: 9019938963247098195}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: scope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2259,7 +2267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4650247021789793831}
   - component: {fileID: 6148272503623184806}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: head.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2355,7 +2363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6296027634745077637}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2387,7 +2395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2791213318174254007}
   - component: {fileID: 5036605209921095552}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2485,7 +2493,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2432943119932006390}
   - component: {fileID: 5590893896120584262}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2582,7 +2590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3376240979774562947}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet_3 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

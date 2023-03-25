@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f30e055d574fed99ee4384c02d16cc, type: 3}
+  m_Name: ACC_CID_WEP_Aim_In
+  m_EditorClassIdentifier: 
+  audioClipID: {fileID: 11400000, guid: f564d65a643f7fe47a461462ac6f1960, type: 2}
+  audioClip: {fileID: 8300000, guid: afe80d867ef6b8c4fa45b07f1f99533c, type: 3}

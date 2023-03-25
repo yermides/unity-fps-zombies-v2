@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ProjectZ.Code.Runtime.Core.Audio
 {
-    [CreateAssetMenu(fileName = "ID_CLIP_", menuName = "ProjectZ/Audio/AudioClipID", order = 0)]
+    [CreateAssetMenu(fileName = "CID_", menuName = "ProjectZ/Audio/AudioClipID", order = 0)]
     public class AudioClipID : ScriptableObject
     {
         /// <summary>
@@ -17,14 +17,14 @@ namespace ProjectZ.Code.Runtime.Core.Audio
         /// and to replace clips usage across the board with just a Clip replacement inside AudioClipConfiguration
         /// </summary>
 #if UNITY_EDITOR
-        private const string Path = "Assets/ProjectZ/Level/Scriptables/Audio/ACC_CLIP_.asset";
+        private const string Path = "Assets/ProjectZ/Level/Scriptables/Audio";
         
         [Button]
         private void CreateAndAssignConfiguration()
         {
             AudioClipConfiguration asset = ScriptableObject.CreateInstance<AudioClipConfiguration>();
             asset.SetClipID(this);
-            AssetDatabase.CreateAsset(asset, Path);
+            AssetDatabase.CreateAsset(asset, $"{Path}/ACC_{name}.asset");
             AssetDatabase.SaveAssets();
             EditorUtility.FocusProjectWindow();
             Selection.activeObject = asset;

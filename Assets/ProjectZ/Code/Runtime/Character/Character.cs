@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+using InfimaGames.LowPolyShooterPack;
 using NaughtyAttributes;
-using ProjectZ.Code.Runtime.Animation;
 using ProjectZ.Code.Runtime.Common;
 using ProjectZ.Code.Runtime.Utils;
 using ProjectZ.Code.Runtime.Utils.Extensions;
-using ProjectZ.Code.Runtime.Weapons;
 using UnityEngine;
+using PlaySoundCharacterBehaviour = ProjectZ.Code.Runtime.Animation.PlaySoundCharacterBehaviour;
+using WeaponBehaviour = ProjectZ.Code.Runtime.Weapons.WeaponBehaviour;
 
 namespace ProjectZ.Code.Runtime.Character
 {
@@ -242,7 +243,7 @@ namespace ProjectZ.Code.Runtime.Character
 
         #region ANIMATION
 
-        private void OnSlideBack(int obj) => throw new System.NotImplementedException();
+        private void OnSlideBack(int obj) => print("OnSlideBack");
         private void OnAnimationEndedHolster() => _isHolstering = false;
         private void OnAnimationEndedInspect() => throw new System.NotImplementedException();
         private void OnAnimationEndedMelee() => throw new System.NotImplementedException();
@@ -253,7 +254,7 @@ namespace ProjectZ.Code.Runtime.Character
         private void OnGrenade() => throw new System.NotImplementedException();
         private void OnSetActiveKnife(int active) => throw new System.NotImplementedException();
         private void OnAmmunitionFill(int amount) => _equippedWeapon.FillMagazine();
-        private void OnEjectCasing() => throw new System.NotImplementedException();
+        private void OnEjectCasing() => print("OnEjectCasing");
 
         #endregion
 
@@ -350,7 +351,10 @@ namespace ProjectZ.Code.Runtime.Character
 
         private bool CanAim() => !_isHolstered && !_isHolstering && !_isReloading;
         private bool CanPlayAnimationFire() => !_isReloading && !_isHolstering;
-        private bool CanPlayAnimationReload() => !_isReloading;
+
+        private bool CanPlayAnimationReload() => !_isReloading
+                                                 && !_equippedWeapon.IsMagazineFull()
+                                                 && _equippedWeapon.GetAmmunitionInventoryCurrent() > 0;
         private bool CanPlayAnimationHolster() => !_isReloading;
         private bool CanChangeWeapon() => !_isReloading && !_isHolstering;
         

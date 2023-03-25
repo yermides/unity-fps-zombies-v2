@@ -73,7 +73,7 @@ namespace ProjectZ.Code.Runtime.Weapons
 
         #region GETTERS
 
-        public override WeaponID GetWeaponId() => weaponID;
+        public override WeaponID GetWeaponID() => weaponID;
         public override int GetAmmunitionCurrent() => _ammunitionMagazineCurrent;
         public override int GetAmmunitionTotal() => ammunitionMagazineTotal;
         public override int GetAmmunitionInventoryCurrent() => _ammunitionInventoryCurrent;

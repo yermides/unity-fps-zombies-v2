@@ -414,12 +414,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponID: {fileID: 11400000, guid: 9e1d9839c1a039e40ad21c666e1248c4, type: 2}
   tipPoint: {fileID: 3341677770694389395}
+  weaponAnimator: {fileID: 0}
+  characterAnimatorController: {fileID: 0}
   rateOfFire: 700
   damage: 120
   isAutomatic: 1
-  usesProjectiles: 1
   ammunitionMagazineTotal: 30
   ammunitionInventoryTotal: 210
+  audioClipHolster: {fileID: 0}
+  audioClipUnholster: {fileID: 0}
+  audioClipReload: {fileID: 0}
+  audioClipReloadEmpty: {fileID: 0}
+  audioClipFire: {fileID: 0}
+  audioClipFireEmpty: {fileID: 0}
+  usesProjectiles: 1
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 128

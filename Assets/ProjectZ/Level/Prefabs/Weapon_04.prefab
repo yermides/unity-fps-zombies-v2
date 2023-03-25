@@ -33,6 +33,7 @@ Transform:
   m_Children:
   - {fileID: 9145069025431643893}
   - {fileID: 901933184563298387}
+  - {fileID: 3664205202997067843}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -81,7 +82,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponID: {fileID: 11400000, guid: e816eae84ad91d44b9b53b7143ffb3a4, type: 2}
-  tipPoint: {fileID: 5811462493274569196}
+  tipPoint: {fileID: 3664205202997067843}
   weaponAnimator: {fileID: 4632376629678074223}
   characterAnimatorController: {fileID: 22100000, guid: 9bebae7635c42924db65142471010ac0,
     type: 2}
@@ -90,12 +91,13 @@ MonoBehaviour:
   isAutomatic: 0
   ammunitionMagazineTotal: 8
   ammunitionInventoryTotal: 80
-  audioClipHolster: {fileID: 0}
-  audioClipUnholster: {fileID: 0}
-  audioClipReload: {fileID: 0}
-  audioClipReloadEmpty: {fileID: 0}
-  audioClipFire: {fileID: 0}
-  audioClipFireEmpty: {fileID: 0}
+  audioClipHolster: {fileID: 11400000, guid: 9260d06f2d3c4de4aa3f4785d915cdcc, type: 2}
+  audioClipUnholster: {fileID: 11400000, guid: 721ae0083ee44ba4bbc3d6cb55347fea, type: 2}
+  audioClipReload: {fileID: 11400000, guid: 1b476d3067be1b341a49710392c80727, type: 2}
+  audioClipReloadEmpty: {fileID: 11400000, guid: d547c198ff8cc9a408341ebb629f1d65,
+    type: 2}
+  audioClipFire: {fileID: 11400000, guid: 3161b8d61d6e4fb408daa8d2f81d79be, type: 2}
+  audioClipFireEmpty: {fileID: 11400000, guid: 20bbb38168ba3434f9356e00de33344c, type: 2}
   usesProjectiles: 1
   raycastLayerMask:
     serializedVersion: 2
@@ -623,6 +625,37 @@ Transform:
   - {fileID: 7235876701396549494}
   m_Father: {fileID: 9145069025431643893}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8267678465381048082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3664205202997067843}
+  m_Layer: 8
+  m_Name: Muzzle Socket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3664205202997067843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267678465381048082}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0032, y: 0.0519, z: 0.132}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5811462493274569196}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &305738142179395144
 PrefabInstance:

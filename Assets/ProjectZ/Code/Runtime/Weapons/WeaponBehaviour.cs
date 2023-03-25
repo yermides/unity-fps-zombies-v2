@@ -16,8 +16,8 @@ namespace ProjectZ.Code.Runtime.Weapons
         
         #region GETTERS
 
-        public abstract WeaponID GetWeaponId();
-        public abstract int GetAmmunitionCurrent();
+        public abstract WeaponID GetWeaponID();
+        public abstract int GetAmmunitionCurrent(); // Current rounds in magazine
         public abstract int GetAmmunitionTotal();
         public abstract int GetAmmunitionInventoryCurrent();
         public abstract int GetAmmunitionInventoryTotal();
@@ -27,7 +27,8 @@ namespace ProjectZ.Code.Runtime.Weapons
         public abstract float GetRateOfFire();
 
         public float GetFireInterval() => 60.0f / GetRateOfFire();
-
+        public bool IsMagazineFull() => GetAmmunitionCurrent() == GetAmmunitionTotal();
+        
         public abstract AudioClipID GetAudioClipHolster();
         public abstract AudioClipID GetAudioClipUnholster();
         public abstract AudioClipID GetAudioClipReload();

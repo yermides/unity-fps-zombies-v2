@@ -15,7 +15,7 @@ namespace ProjectZ.Code.Runtime.Weapons
 
             foreach (var weaponBehaviour in weapons)
             {
-                _idToWeapons.TryAdd(weaponBehaviour.GetWeaponId(), weaponBehaviour);
+                _idToWeapons.TryAdd(weaponBehaviour.GetWeaponID(), weaponBehaviour);
             }
         }
 

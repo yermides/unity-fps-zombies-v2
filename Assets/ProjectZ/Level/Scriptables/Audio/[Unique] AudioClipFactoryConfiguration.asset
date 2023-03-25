@@ -12,5 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fb2e7beb7943539db3c8a36d303a3a, type: 3}
   m_Name: '[Unique] AudioClipFactoryConfiguration'
   m_EditorClassIdentifier: 
-  audioClipProxies:
+  audioClipToIDConfigurations:
+  - {fileID: 11400000, guid: 9f7bcc40805ae1a4b81f2a3509232cbb, type: 2}
+  - {fileID: 11400000, guid: b979ab6544bc841429eb3b15568e5d65, type: 2}
+  - {fileID: 11400000, guid: dda22b84c19238349a48a64fb1275c26, type: 2}
+  - {fileID: 11400000, guid: afe9331dc2617004391410b7173422fa, type: 2}
+  - {fileID: 11400000, guid: ac7cd1ae11a11304b83d79759e18ad0a, type: 2}
+  - {fileID: 11400000, guid: e077547fd90f4d743abb1f8612431a33, type: 2}
+  - {fileID: 11400000, guid: dbe6d3abbbeeedf4a8586bfcebf747f2, type: 2}
   - {fileID: 11400000, guid: d0089508ef9c2594facc3a3a4da3c934, type: 2}
+  - {fileID: 11400000, guid: 10000533b8b3c3a41b86f0a4ac30c646, type: 2}
+  - {fileID: 11400000, guid: f0905476b8a5e374eaaffc0f0ca4cadf, type: 2}
