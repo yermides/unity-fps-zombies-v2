@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using NaughtyAttributes;
 using ProjectZ.Code.Runtime.Animation;
@@ -85,6 +86,7 @@ namespace ProjectZ.Code.Runtime.Character
         private bool _isAiming;
         private bool _isRunning;
         private bool _isReloading;
+        private bool _isHolstered;
         private bool _isHolstering;
         
         // Animator Layers
@@ -114,6 +116,10 @@ namespace ProjectZ.Code.Runtime.Character
             _layerHolster = animator.GetLayerIndex(AnimatorHelper.LayerNameHolster);
             _layerActions = animator.GetLayerIndex(AnimatorHelper.LayerNameActions);
 
+            // Initialize weapons
+            inventory.Init();
+            RefreshWeaponSetup();
+            
             // Configure the State Machine Behaviour dependencies
             var behaviours = animator.GetBehaviours<PlaySoundCharacterBehaviour>();
             
@@ -125,10 +131,6 @@ namespace ProjectZ.Code.Runtime.Character
 
         protected override void Start()
         {
-            // Initialize Inventory
-            inventory.Init(0);
-            _equippedWeapon = inventory.GetWeaponEquipped();
-            
             // Subscribe to events
             SubscribeInputEvents();
             SubscribeAnimationEvents();
@@ -137,10 +139,9 @@ namespace ProjectZ.Code.Runtime.Character
 
         protected override void Update()
         {
-            // Match Aim
-            _isAiming = _isHoldingButtonAim /* && CanAim() */;
-            // Match Run
-            _isRunning = _isHoldingButtonRun /* && CanRun() */;
+            // Match Animator params
+            _isAiming = _isHoldingButtonAim && CanAim();
+            _isRunning = _isHoldingButtonRun && CanRun();
             
             UpdateFire();
             UpdateAnimator();
@@ -165,7 +166,7 @@ namespace ProjectZ.Code.Runtime.Character
 
         public override UnityEngine.Camera GetWorldCamera() => camera;
         public override bool IsRunning() => _isHoldingButtonRun;
-        public override bool IsAiming() => throw new System.NotImplementedException();
+        public override bool IsAiming() => _isAiming;
         public override Vector2 GetMovementInput() => _movementInput;
         public override Vector2 GetLookInput() => _lookInput;
         public override bool IsCursorLocked() => true;
@@ -186,12 +187,23 @@ namespace ProjectZ.Code.Runtime.Character
         // Firing On-click for both auto and semi-auto weapons
         private void OnFirePerformed()
         {
-            if (Time.time - _lastShotTime > _equippedWeapon.GetFireInterval())
+            if (!CanPlayAnimationFire()) return;
+
+            if (_equippedWeapon.HasAmmunition())
             {
-                Fire();
+                if (_equippedWeapon.IsAutomatic()) return;
+                
+                if (Time.time - _lastShotTime > _equippedWeapon.GetFireInterval())
+                {
+                    Fire();
+                }
+            }
+            else
+            {
+                FireEmpty();
             }
         }
-        
+
         private void OnFireCanceled() => _isHoldingButtonFire = false;
         private void OnRunStarted() => _isHoldingButtonRun = true;
         private void OnRunCanceled() => _isHoldingButtonRun = false;
@@ -207,22 +219,20 @@ namespace ProjectZ.Code.Runtime.Character
             int indexCurrent = inventory.GetEquippedIndex();
 
             // Equip next weapon if it's not the next
-            if (indexCurrent != indexNext)
+            if (CanChangeWeapon() && indexCurrent != indexNext)
             {
-                inventory.Equip(indexNext);
-                _equippedWeapon = inventory.GetWeaponEquipped();
+                StartCoroutine(nameof(Equip), indexNext);
+                
+                // inventory.Equip(indexNext);
+                // _equippedWeapon = inventory.GetWeaponEquipped();
             }
         }
 
         private void OnReloadPerformed()
         {
-            // Play reload animation
-            var stateName = _equippedWeapon.HasAmmunition() ? AnimatorHelper.StateNameReload : AnimatorHelper.StateNameReloadEmpty;
-            animator.Play(stateName, _layerActions, 0.0f);
-            // _isReloading = true;
-            
-            // Reload the weapon
-            _equippedWeapon.Reload();
+            if (!CanPlayAnimationReload()) return;
+
+            PlayReloadAnimation();
         }
 
         private void OnAimStarted() => _isHoldingButtonAim = true;
@@ -233,11 +243,11 @@ namespace ProjectZ.Code.Runtime.Character
         #region ANIMATION
 
         private void OnSlideBack(int obj) => throw new System.NotImplementedException();
-        private void OnAnimationEndedHolster() => throw new System.NotImplementedException();
+        private void OnAnimationEndedHolster() => _isHolstering = false;
         private void OnAnimationEndedInspect() => throw new System.NotImplementedException();
         private void OnAnimationEndedMelee() => throw new System.NotImplementedException();
         private void OnAnimationEndedGrenadeThrow() => throw new System.NotImplementedException();
-        private void OnAnimationEndedReload() => throw new System.NotImplementedException();
+        private void OnAnimationEndedReload() => _isReloading = false;
         private void OnAnimationEndedBolt() => throw new System.NotImplementedException();
         private void OnSetActiveMagazine(int active) => throw new System.NotImplementedException();
         private void OnGrenade() => throw new System.NotImplementedException();
@@ -324,6 +334,37 @@ namespace ProjectZ.Code.Runtime.Character
             _characterAnimatorEvents.SlideBackEvent -= OnSlideBack;
         }
 
+        private bool CanRun()
+        {
+            // Block if aiming or reloading
+            if (_isReloading || _isAiming) return false;
+
+            // While trying to fire, we don't want to run
+            if (_isHoldingButtonFire && _equippedWeapon.HasAmmunition()) return false;
+
+            // This blocks running backwards, or while fully moving sideways
+            if (_movementInput.y <= 0 || Math.Abs(Mathf.Abs(_movementInput.x) - 1) < 0.01f) return false;
+            
+            return true;
+        }
+
+        private bool CanAim() => !_isHolstered && !_isHolstering && !_isReloading;
+        private bool CanPlayAnimationFire() => !_isReloading && !_isHolstering;
+        private bool CanPlayAnimationReload() => !_isReloading;
+        private bool CanPlayAnimationHolster() => !_isReloading;
+        private bool CanChangeWeapon() => !_isReloading && !_isHolstering;
+        
+        private void PlayReloadAnimation()
+        {
+            // Play reload animation
+            var stateName = _equippedWeapon.HasAmmunition() ? AnimatorHelper.StateNameReload : AnimatorHelper.StateNameReloadEmpty;
+            animator.Play(stateName, _layerActions, 0.0f);
+            _isReloading = true;
+            
+            // Reload the weapon
+            _equippedWeapon.Reload();
+        }
+
         private void Fire()
         {
             _lastShotTime = Time.time;
@@ -331,15 +372,20 @@ namespace ProjectZ.Code.Runtime.Character
             animator.CrossFade(AnimatorHelper.StateNameFire, 0.05f, _layerOverlay, 0);
         }
         
+        private void FireEmpty()
+        {
+            _lastShotTime = Time.time;
+            animator.CrossFade(AnimatorHelper.StateNameFireEmpty, 0.05f, _layerOverlay, 0);
+        }
+        
         private void UpdateFire()
         {
             // Update Firing
             if (!_isHoldingButtonFire) return;
 
-            // TODO: Check for rounds and if is automatic
-            if (_equippedWeapon.IsAutomatic())
+            if (CanPlayAnimationFire() && _equippedWeapon.HasAmmunition() && _equippedWeapon.IsAutomatic())
             {
-                // Has fire rate passed.
+                // Has fire rate passed
                 if (Time.time - _lastShotTime > _equippedWeapon.GetFireInterval())
                 {
                     Fire();
@@ -363,6 +409,46 @@ namespace ProjectZ.Code.Runtime.Character
 
             animator.SetBool(AnimatorHelper.HashAiming, _isAiming);
             animator.SetBool(AnimatorHelper.HashRunning, _isRunning);
+        }
+        
+        private void SetHolstered(bool value = true)
+        {
+            // Update value
+            _isHolstered = value;
+
+            // Update Animator
+            animator.SetBool(AnimatorHelper.BoolNameHolstered, _isHolstered);
+        }
+
+        private void RefreshWeaponSetup()
+        {
+            // Injects the dependencies the weapon holds for the character
+            
+            // Make sure we have a weapon. We don't want errors!
+            if ((_equippedWeapon = inventory.GetWeaponEquipped()) == null) return;
+
+            //Update Animator Controller. We do this to update all animations to a specific weapon's set.
+            animator.runtimeAnimatorController = _equippedWeapon.GetCharacterAnimatorController();
+        }
+
+        private IEnumerator Equip(int index)
+        {
+            if(!_isHolstered)
+            {
+                SetHolstered(_isHolstering = true);
+                yield return new WaitUntil(() => _isHolstering == false);
+            }
+            
+            SetHolstered(false);
+            animator.Play(AnimatorHelper.StateNameUnholster, _layerHolster, 0);
+
+            inventory.Equip(index);
+            RefreshWeaponSetup();
+            
+            // // TODO:
+            // yield return new WaitForSeconds(1);
+            // inventory.Equip(index);
+            // _equippedWeapon = inventory.GetWeaponEquipped();
         }
 
         private void OnCharacterDeath()

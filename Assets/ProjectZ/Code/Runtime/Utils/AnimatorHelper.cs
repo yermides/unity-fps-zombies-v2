@@ -20,6 +20,7 @@ namespace ProjectZ.Code.Runtime.Utils
         // Parameter names
         public const string BoolNameAim = "Aim"; // Aim request, bool
         public const string BoolNameRun = "Running";
+        public const string BoolNameHolstered = "Holstered";
         
         // State names
         public const string StateNameInspect = "Inspect";

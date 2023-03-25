@@ -86,35 +86,14 @@ namespace ProjectZ.Code.Runtime.Weapons
             GetAmmunitionInventoryCurrent() == GetAmmunitionInventoryTotal();
         
         public override float GetRateOfFire() => rateOfFire;
-        public override AudioClipID GetAudioClipHolster()
-        {
-            throw new System.NotImplementedException();
-        }
 
-        public override AudioClipID GetAudioClipUnholster()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override AudioClipID GetAudioClipReload()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override AudioClipID GetAudioClipReloadEmpty()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override AudioClipID GetAudioClipFire()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override AudioClipID GetAudioClipFireEmpty()
-        {
-            throw new System.NotImplementedException();
-        }
+        public override AudioClipID GetAudioClipHolster() => audioClipHolster;
+        public override AudioClipID GetAudioClipUnholster()=> audioClipUnholster;
+        public override AudioClipID GetAudioClipReload() => audioClipReload;
+        public override AudioClipID GetAudioClipReloadEmpty() => audioClipReloadEmpty;
+        public override AudioClipID GetAudioClipFire() => audioClipFire;
+        public override AudioClipID GetAudioClipFireEmpty() => audioClipFireEmpty;
+        public override RuntimeAnimatorController GetCharacterAnimatorController() => characterAnimatorController;
 
         #endregion
 

@@ -34,6 +34,7 @@ namespace ProjectZ.Code.Runtime.Weapons
         public abstract AudioClipID GetAudioClipReloadEmpty();
         public abstract AudioClipID GetAudioClipFire();
         public abstract AudioClipID GetAudioClipFireEmpty();
+        public abstract RuntimeAnimatorController GetCharacterAnimatorController();
 
         #endregion
 

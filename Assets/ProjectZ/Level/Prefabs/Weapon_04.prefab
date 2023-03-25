@@ -83,7 +83,8 @@ MonoBehaviour:
   weaponID: {fileID: 11400000, guid: e816eae84ad91d44b9b53b7143ffb3a4, type: 2}
   tipPoint: {fileID: 5811462493274569196}
   weaponAnimator: {fileID: 4632376629678074223}
-  characterAnimatorController: {fileID: 0}
+  characterAnimatorController: {fileID: 22100000, guid: 9bebae7635c42924db65142471010ac0,
+    type: 2}
   rateOfFire: 700
   damage: 30
   isAutomatic: 0

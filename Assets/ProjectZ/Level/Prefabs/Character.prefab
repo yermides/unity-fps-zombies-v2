@@ -5198,6 +5198,12 @@ PrefabInstance:
       propertyPath: tipPoint
       value: 
       objectReference: {fileID: 7188440014139998184}
+    - target: {fileID: 1804094109946365196, guid: 44110acfcba3cf146b09f35173b396b9,
+        type: 3}
+      propertyPath: characterAnimatorController
+      value: 
+      objectReference: {fileID: 22100000, guid: 9bebae7635c42924db65142471010ac0,
+        type: 2}
     - target: {fileID: 5811462493274569196, guid: 44110acfcba3cf146b09f35173b396b9,
         type: 3}
       propertyPath: m_RootOrder
