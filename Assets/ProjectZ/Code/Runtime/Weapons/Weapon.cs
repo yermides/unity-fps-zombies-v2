@@ -53,6 +53,7 @@ namespace ProjectZ.Code.Runtime.Weapons
         #region FIELDS
 
         private CharacterBehaviour _characterBehaviour;
+        private Transform _characterCamera;
         [ShowNonSerializedField] private int _ammunitionMagazineCurrent; // Bullets in magazine
         [ShowNonSerializedField] private int _ammunitionInventoryCurrent; // Current bullets in inventory
 
@@ -63,6 +64,7 @@ namespace ProjectZ.Code.Runtime.Weapons
         protected override void Awake()
         {
             _characterBehaviour = GetComponentInParent<CharacterBehaviour>();
+            _characterCamera = _characterBehaviour.GetWorldCamera().transform;
             // weaponAnimator = GetComponentInChildren<Animator>();
             
             // Fully reloaded on Awake
@@ -144,8 +146,8 @@ namespace ProjectZ.Code.Runtime.Weapons
 
         private void ShootProjectile()
         {
-            var firingPoint = GetTipPoint();
-            var targetForward = firingPoint.forward;
+            var firingPointPosition = GetTipPoint().position;
+            
             var args = new ProjectileArgs
             {
                 Team = _characterBehaviour.GetTeam(), 
@@ -156,14 +158,15 @@ namespace ProjectZ.Code.Runtime.Weapons
                 OnKill = delegate { _characterBehaviour.AddPoints(50); },  
             };
             
+            Quaternion rotation = Quaternion.LookRotation(_characterCamera.forward * 1000.0f - firingPointPosition);
+            
             // Instantiate and configure projectile dependencies
-            var bullet = Instantiate(projectilePrefab, firingPoint.position, Quaternion.identity);
+            var bullet = Instantiate(projectilePrefab, firingPointPosition, rotation);
             bullet.Configure(args);
             
             // Apply bullet force
             var bulletRigidbody = bullet.GetComponent<Rigidbody>();
-            bullet.transform.forward = targetForward;
-            bulletRigidbody.velocity = targetForward * projectileImpulse;
+            bulletRigidbody.velocity = bullet.transform.forward * projectileImpulse;
         }
 
         // TODO: ignore collision of the CharacterController (use layers or something, I used to use TransparentFX on the character)

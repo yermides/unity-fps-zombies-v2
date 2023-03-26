@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
-using InfimaGames.LowPolyShooterPack;
 using NaughtyAttributes;
 using ProjectZ.Code.Runtime.Common;
 using ProjectZ.Code.Runtime.Utils;
@@ -351,7 +350,6 @@ namespace ProjectZ.Code.Runtime.Character
 
         private bool CanAim() => !_isHolstered && !_isHolstering && !_isReloading;
         private bool CanPlayAnimationFire() => !_isReloading && !_isHolstering;
-
         private bool CanPlayAnimationReload() => !_isReloading
                                                  && !_equippedWeapon.IsMagazineFull()
                                                  && _equippedWeapon.GetAmmunitionInventoryCurrent() > 0;
@@ -448,11 +446,6 @@ namespace ProjectZ.Code.Runtime.Character
 
             inventory.Equip(index);
             RefreshWeaponSetup();
-            
-            // // TODO:
-            // yield return new WaitForSeconds(1);
-            // inventory.Equip(index);
-            // _equippedWeapon = inventory.GetWeaponEquipped();
         }
 
         private void OnCharacterDeath()

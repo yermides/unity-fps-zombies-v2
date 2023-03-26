@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 3459659466077523765}
   - component: {fileID: 3459659466077523766}
   m_Layer: 8
-  m_Name: Weapon_05
+  m_Name: WEP_AR_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -307,22 +307,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e9ee3928d6a4a1fac5749cc4caaee60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponID: {fileID: 11400000, guid: e816eae84ad91d44b9b53b7143ffb3a4, type: 2}
+  weaponID: {fileID: 11400000, guid: 9e1d9839c1a039e40ad21c666e1248c4, type: 2}
   tipPoint: {fileID: 3459659466792925296}
   weaponAnimator: {fileID: 3459659466077523764}
   characterAnimatorController: {fileID: 22100000, guid: 472de4a554aa6f44fa37d85942bf8fb7,
     type: 2}
   rateOfFire: 610
-  damage: 30
+  damage: 100
   isAutomatic: 1
   ammunitionMagazineTotal: 30
   ammunitionInventoryTotal: 270
   audioClipHolster: {fileID: 11400000, guid: 9260d06f2d3c4de4aa3f4785d915cdcc, type: 2}
   audioClipUnholster: {fileID: 11400000, guid: 721ae0083ee44ba4bbc3d6cb55347fea, type: 2}
-  audioClipReload: {fileID: 11400000, guid: 1b476d3067be1b341a49710392c80727, type: 2}
-  audioClipReloadEmpty: {fileID: 11400000, guid: d547c198ff8cc9a408341ebb629f1d65,
+  audioClipReload: {fileID: 11400000, guid: bb46fd85254eb604d8e409e00d7f14d7, type: 2}
+  audioClipReloadEmpty: {fileID: 11400000, guid: a250cdd89830ee14fa996db8fff429da,
     type: 2}
-  audioClipFire: {fileID: 11400000, guid: 3161b8d61d6e4fb408daa8d2f81d79be, type: 2}
+  audioClipFire: {fileID: 11400000, guid: 639c2575d2025bf40940d8a8f9af374e, type: 2}
   audioClipFireEmpty: {fileID: 11400000, guid: 20bbb38168ba3434f9356e00de33344c, type: 2}
   usesProjectiles: 1
   raycastLayerMask:
