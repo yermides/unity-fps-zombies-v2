@@ -10,6 +10,11 @@ using UnityEngine.AI;
 
 namespace ProjectZ.Code.Runtime.Zombie
 {
+    public struct ZombieArgs
+    {
+        public IZombieAnimatorEvents zombieAnimatorEvents;
+    }
+
     [SelectionBase]
     public sealed class Zombie : ZombieBehaviour
     {
@@ -37,6 +42,7 @@ namespace ProjectZ.Code.Runtime.Zombie
         private IState _stateCurrent;
         private ZombieStateID _stateIDCurrent;
         private Dictionary<ZombieStateID, IState> _zombieStatesToIDs;
+        private IZombieAnimatorEvents _zombieAnimatorEvents;
 
         #endregion
 
@@ -91,7 +97,12 @@ namespace ProjectZ.Code.Runtime.Zombie
         #endregion
 
         #region FUNCTIONS
-        
+
+        public void Configure(ZombieArgs args)
+        {
+            _zombieAnimatorEvents = args.zombieAnimatorEvents;
+        }
+
         public override void Attack()
         {
             if (_canAttack)
@@ -132,11 +143,13 @@ namespace ProjectZ.Code.Runtime.Zombie
         
         private void ConfigureStateMachine()
         {
+            var spawningState = new SpawningState(this, SwitchToChasingState);
             var chasingState = new ChasingState(this, SwitchToAttackingState);
             var attackingState = new AttackingState(this, SwitchToChasingState);
             
             _zombieStatesToIDs = new Dictionary<ZombieStateID, IState>()
             {
+                { ZombieStateID.Spawning , spawningState },
                 { ZombieStateID.Chasing, chasingState },
                 { ZombieStateID.Attacking, attackingState },
             };
@@ -148,11 +161,7 @@ namespace ProjectZ.Code.Runtime.Zombie
 
         private void SwitchToChasingState() => SwitchState(ZombieStateID.Chasing);
         private void SwitchToAttackingState() => SwitchState(ZombieStateID.Attacking);
-
-        private IState GetStateByID(ZombieStateID zombieStateID)
-        {
-            return _zombieStatesToIDs[zombieStateID];
-        }
+        private IState GetStateByID(ZombieStateID zombieStateID) => _zombieStatesToIDs[zombieStateID];
 
         private async void SwitchState(ZombieStateID zombieStateID)
         {
@@ -164,7 +173,8 @@ namespace ProjectZ.Code.Runtime.Zombie
         }
 
         public ZombieStateID GetCurrentStateID() => _stateIDCurrent;
-        
+        public IZombieAnimatorEvents GetAnimatorEvents() => _zombieAnimatorEvents; // states may subscribe to events
+
         #endregion
     }
 }

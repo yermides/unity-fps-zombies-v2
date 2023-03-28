@@ -222,9 +222,6 @@ namespace ProjectZ.Code.Runtime.Character
             if (CanChangeWeapon() && indexCurrent != indexNext)
             {
                 StartCoroutine(nameof(Equip), indexNext);
-                
-                // inventory.Equip(indexNext);
-                // _equippedWeapon = inventory.GetWeaponEquipped();
             }
         }
 

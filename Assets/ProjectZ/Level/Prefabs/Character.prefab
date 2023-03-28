@@ -805,6 +805,7 @@ GameObject:
   - component: {fileID: 554146559644618452}
   - component: {fileID: 5380510001517315124}
   - component: {fileID: 289463498041357530}
+  - component: {fileID: 454957472}
   m_Layer: 8
   m_Name: SK_FP_CH_Default_Root
   m_TagString: Untagged
@@ -861,6 +862,90 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e2b91f5bdd4be2a6fd07414c160e94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &454957472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683796541223850948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneShape: 0
+  drawBones: 1
+  drawTripods: 0
+  boneSize: 5
+  tripodSize: 0.56
+  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
+  m_Transforms:
+  - {fileID: 5883113892098454460}
+  - {fileID: 3774518870445891977}
+  - {fileID: 8951736561006848769}
+  - {fileID: 7326486222533588888}
+  - {fileID: 792650324014726410}
+  - {fileID: 6316380741066881923}
+  - {fileID: 7914977016127287155}
+  - {fileID: 584272705323362537}
+  - {fileID: 7913923985687071900}
+  - {fileID: 6711043328003865549}
+  - {fileID: 7717644503165315316}
+  - {fileID: 8089885867143870241}
+  - {fileID: 7907860462432044696}
+  - {fileID: 4123782957070984697}
+  - {fileID: 3865009936250438703}
+  - {fileID: 2954873624997071259}
+  - {fileID: 7709412551587584715}
+  - {fileID: 9182856020909888834}
+  - {fileID: 7089491276934003146}
+  - {fileID: 9213965364265966966}
+  - {fileID: 4388752270512629992}
+  - {fileID: 999432246399829102}
+  - {fileID: 5602096994975600804}
+  - {fileID: 6822399097302856788}
+  - {fileID: 4741128812822319088}
+  - {fileID: 7696583423503128638}
+  - {fileID: 5928358574638543208}
+  - {fileID: 2111926697812497172}
+  - {fileID: 6646690578278661885}
+  - {fileID: 2745969625126911291}
+  - {fileID: 8786471385492746575}
+  - {fileID: 290533383965069525}
+  - {fileID: 5303898800249433541}
+  - {fileID: 2837686113464594320}
+  - {fileID: 3361550804730506190}
+  - {fileID: 320409748901651491}
+  - {fileID: 4307137453019043350}
+  - {fileID: 453762483671460842}
+  - {fileID: 5184333649159077203}
+  - {fileID: 6578103487181185499}
+  - {fileID: 2822399960126762824}
+  - {fileID: 6510357874972401426}
+  - {fileID: 668942961706992416}
+  - {fileID: 8754599216306916246}
+  - {fileID: 8115305343687213320}
+  - {fileID: 1537537479425141651}
+  - {fileID: 2902389846913796632}
+  - {fileID: 8565462481399155191}
+  - {fileID: 7763347034897660494}
+  - {fileID: 4785456572851151663}
+  - {fileID: 3533184056236652984}
+  - {fileID: 8534363921304064843}
+  - {fileID: 5869628882633878128}
+  - {fileID: 332572444689850985}
+  - {fileID: 2629482980916339482}
+  - {fileID: 8424235117614556224}
+  - {fileID: 880891281207722832}
+  - {fileID: 5049168944315162998}
+  - {fileID: 8414015896872686687}
+  - {fileID: 5567300526606702414}
+  - {fileID: 8219360381604673299}
+  - {fileID: 402949760869458082}
+  - {fileID: 1158262290556255546}
+  - {fileID: 3086539230250734430}
+  - {fileID: 123758136662602709}
 --- !u!1 &803032299002423818
 GameObject:
   m_ObjectHideFlags: 0
@@ -2426,7 +2511,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 10
-  field of view: 60
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -3347,7 +3432,7 @@ PrefabInstance:
     - target: {fileID: 888925284656964396, guid: 44110acfcba3cf146b09f35173b396b9,
         type: 3}
       propertyPath: m_Name
-      value: Weapon_04
+      value: WEP_Handgun_01
       objectReference: {fileID: 0}
     - target: {fileID: 888925284656964396, guid: 44110acfcba3cf146b09f35173b396b9,
         type: 3}
@@ -3438,7 +3523,7 @@ PrefabInstance:
     - target: {fileID: 3459659466077523767, guid: 077ef222714721147bec828596edb5f4,
         type: 3}
       propertyPath: m_Name
-      value: Weapon_05
+      value: WEP_AR_01
       objectReference: {fileID: 0}
     - target: {fileID: 3459659466077523767, guid: 077ef222714721147bec828596edb5f4,
         type: 3}
