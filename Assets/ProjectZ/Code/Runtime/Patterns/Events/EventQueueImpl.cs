@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ProjectZ.Code.Runtime.Patterns.Events
 {
+    [DefaultExecutionOrder(-2)]
     public class EventQueueImpl : MonoBehaviour, IEventQueue
     {
         private Dictionary<Type, dynamic> _eventsToDelegatesDictionary;

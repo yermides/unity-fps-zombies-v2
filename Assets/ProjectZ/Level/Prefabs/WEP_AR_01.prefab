@@ -312,6 +312,7 @@ MonoBehaviour:
   weaponAnimator: {fileID: 3459659466077523764}
   characterAnimatorController: {fileID: 22100000, guid: 472de4a554aa6f44fa37d85942bf8fb7,
     type: 2}
+  weaponName: AR_01
   rateOfFire: 610
   damage: 100
   isAutomatic: 1

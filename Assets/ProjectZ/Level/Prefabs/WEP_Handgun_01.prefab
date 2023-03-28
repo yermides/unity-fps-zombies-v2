@@ -86,6 +86,7 @@ MonoBehaviour:
   weaponAnimator: {fileID: 4632376629678074223}
   characterAnimatorController: {fileID: 22100000, guid: 9bebae7635c42924db65142471010ac0,
     type: 2}
+  weaponName: Handgun_01
   rateOfFire: 700
   damage: 25
   isAutomatic: 0

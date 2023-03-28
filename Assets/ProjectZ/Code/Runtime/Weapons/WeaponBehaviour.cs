@@ -16,7 +16,8 @@ namespace ProjectZ.Code.Runtime.Weapons
         
         #region GETTERS
 
-        public abstract WeaponID GetWeaponID();
+        public abstract WeaponID GetWeaponID();        
+        public abstract string GetWeaponName();
         public abstract int GetAmmunitionCurrent(); // Current rounds in magazine
         public abstract int GetAmmunitionTotal();
         public abstract int GetAmmunitionInventoryCurrent();

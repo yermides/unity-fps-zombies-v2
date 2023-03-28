@@ -1,12 +1,16 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+using InfimaGames.LowPolyShooterPack;
 using NaughtyAttributes;
 using ProjectZ.Code.Runtime.Common;
+using ProjectZ.Code.Runtime.Common.Events;
+using ProjectZ.Code.Runtime.Patterns.Events;
 using ProjectZ.Code.Runtime.Utils;
 using ProjectZ.Code.Runtime.Utils.Extensions;
 using UnityEngine;
 using PlaySoundCharacterBehaviour = ProjectZ.Code.Runtime.Animation.PlaySoundCharacterBehaviour;
+using ServiceLocator = ProjectZ.Code.Runtime.Patterns.ServiceLocator;
 using WeaponBehaviour = ProjectZ.Code.Runtime.Weapons.WeaponBehaviour;
 
 namespace ProjectZ.Code.Runtime.Character
@@ -249,7 +253,23 @@ namespace ProjectZ.Code.Runtime.Character
         private void OnSetActiveMagazine(int active) => throw new System.NotImplementedException();
         private void OnGrenade() => throw new System.NotImplementedException();
         private void OnSetActiveKnife(int active) => throw new System.NotImplementedException();
-        private void OnAmmunitionFill(int amount) => _equippedWeapon.FillMagazine();
+
+        private void OnAmmunitionFill(int amount)
+        {
+            _equippedWeapon.FillMagazine();
+            
+            // Notify UI
+            var eventQueue = ServiceLocator.Instance.GetService<IEventQueue>();
+            
+            var evt = new WeaponReloadedEvent 
+            { 
+                RoundsMagazine = _equippedWeapon.GetAmmunitionCurrent(),
+                RoundsInventory = _equippedWeapon.GetAmmunitionInventoryCurrent()
+            };
+            
+            eventQueue.Enqueue(evt);
+        }
+
         private void OnEjectCasing() => print("OnEjectCasing");
 
         #endregion
@@ -369,6 +389,11 @@ namespace ProjectZ.Code.Runtime.Character
             _lastShotTime = Time.time;
             _equippedWeapon.Fire();
             animator.CrossFade(AnimatorHelper.StateNameFire, 0.05f, _layerOverlay, 0);
+            
+            // Notify UI
+            var eventQueue = ServiceLocator.Instance.GetService<IEventQueue>();
+            var evt = new WeaponFiredEvent { RoundsMagazine = _equippedWeapon.GetAmmunitionCurrent() };
+            eventQueue.Enqueue(evt);
         }
         
         private void FireEmpty()
@@ -426,8 +451,17 @@ namespace ProjectZ.Code.Runtime.Character
             // Make sure we have a weapon. We don't want errors!
             if ((_equippedWeapon = inventory.GetWeaponEquipped()) == null) return;
 
-            //Update Animator Controller. We do this to update all animations to a specific weapon's set.
+            // Update Animator Controller. We do this to update all animations to a specific weapon's set.
             animator.runtimeAnimatorController = _equippedWeapon.GetCharacterAnimatorController();
+
+            var eventQueue = ServiceLocator.Instance.GetService<IEventQueue>();
+            eventQueue.Enqueue(new WeaponSwitchEvent
+                { 
+                    Name = _equippedWeapon.GetWeaponName(),
+                    AmmoMagazine = _equippedWeapon.GetAmmunitionCurrent(),
+                    AmmoInventory = _equippedWeapon.GetAmmunitionInventoryCurrent()
+                }
+            );
         }
 
         private IEnumerator Equip(int index)

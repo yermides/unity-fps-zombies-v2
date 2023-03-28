@@ -19,7 +19,8 @@ namespace ProjectZ.Code.Runtime.Weapons
         [Tooltip("The AnimatorController the Character will use with this weapon")]
         [SerializeField] private RuntimeAnimatorController characterAnimatorController;
 
-        [Header("Values"), HorizontalLine]
+        [Header("Values"), HorizontalLine] 
+        [SerializeField] private string weaponName = "Default";
 
         [Tooltip("Rate of fire, in rounds per minute")]
         [SerializeField] private float rateOfFire = 700.0f;
@@ -76,6 +77,7 @@ namespace ProjectZ.Code.Runtime.Weapons
         #region GETTERS
 
         public override WeaponID GetWeaponID() => weaponID;
+        public override string GetWeaponName() => weaponName;
         public override int GetAmmunitionCurrent() => _ammunitionMagazineCurrent;
         public override int GetAmmunitionTotal() => ammunitionMagazineTotal;
         public override int GetAmmunitionInventoryCurrent() => _ammunitionInventoryCurrent;
