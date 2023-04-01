@@ -60,7 +60,7 @@ namespace ProjectZ.Code.Runtime.Character
         [Tooltip("How smoothly we play aiming transitions. Beware that this affects lots of things!")]
         [SerializeField] private float dampTimeAiming = 0.3f;
         
-        [Tooltip("Player points")]
+        [Tooltip("Player points"), Min(0)]
         [SerializeField] private int points;
         
         [Tooltip("Zombie Attraction Weight"), Range(0, 1)]
@@ -177,8 +177,24 @@ namespace ProjectZ.Code.Runtime.Character
         public override Team GetTeam() => health.GetTeam();
         public override WeaponBehaviour GetEquippedWeapon() => _equippedWeapon;
         public override int GetPoints() => points;
-        public override void AddPoints(int pts) => points += pts;
-        public override void RemovePoints(int pts) => points -= pts;
+
+        public override void AddPoints(int pts)
+        {
+            points += pts;
+
+            var data = new PointsUpdatedEvent { Points = points };
+            var eventQueue = ServiceLocator.Instance.GetService<IEventQueue>();
+            eventQueue.Enqueue(data);
+        }
+        
+        public override void RemovePoints(int pts)  
+        {
+            points -= pts;
+            
+            var data = new PointsUpdatedEvent { Points = points };
+            var eventQueue = ServiceLocator.Instance.GetService<IEventQueue>();
+            eventQueue.Enqueue(data);
+        }
 
         #endregion
 

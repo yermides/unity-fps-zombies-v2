@@ -7,15 +7,4 @@ namespace ProjectZ.Code.Runtime.Common.Events
         public int AmmoMagazine;
         public int AmmoInventory;
     }
-
-    public struct WeaponFiredEvent
-    {
-        public int RoundsMagazine;
-    }
-
-    public struct WeaponReloadedEvent
-    {
-        public int RoundsMagazine;
-        public int RoundsInventory;
-    }
 }

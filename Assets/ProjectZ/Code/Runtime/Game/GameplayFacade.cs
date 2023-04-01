@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using ProjectZ.Code.Runtime.Common.Events;
 using ProjectZ.Code.Runtime.Patterns;
@@ -10,20 +11,20 @@ using UnityEngine;
 namespace ProjectZ.Code.Runtime.Game
 {
     // TODO: Listen to the events 
-    public class GameplayFacade : MonoBehaviour
-        , IEventListener<RoundFinishedEvent>
+    public class GameplayFacade : MonoBehaviour, IEventListener<RoundFinishedEvent>
     {
         [SerializeField] private ZombieSpawnerBehaviour zombieSpawner;
-        [SerializeField] private bool startSpawnOnFirstUpdate = true;
+        [SerializeField] private bool autoStartSpawn = true;
+        private int _roundCurrent;
 
         private void Start()
         {
             var eventQueue = ServiceLocator.Instance.GetService<IEventQueue>();
             eventQueue.Subscribe<RoundFinishedEvent>(OnEventRaised);
             
-            if (startSpawnOnFirstUpdate)
+            if (autoStartSpawn)
             {
-                zombieSpawner.StartSpawn();
+                StartCoroutine(StartSpawnCoroutine());
             }
         }
 
@@ -35,6 +36,8 @@ namespace ProjectZ.Code.Runtime.Game
 
         public async void OnEventRaised(RoundFinishedEvent data)
         {
+            _roundCurrent = data.RoundNumber;
+            
             Debug.Log("Stopped spawning");
             // Await 5 seconds and enqueue next round event
             zombieSpawner.StopSpawn();
@@ -42,10 +45,17 @@ namespace ProjectZ.Code.Runtime.Game
             await Task.Delay(3000);
 
             Debug.Log($"Finished Round {data.RoundNumber}");
-            
+
             var eventQueue = ServiceLocator.Instance.GetService<IEventQueue>();
-            eventQueue.Enqueue(new RoundStartedEvent{});
+            eventQueue.Enqueue(new RoundStartedEvent {RoundNumber = ++_roundCurrent });
             
+            zombieSpawner.StartSpawn();
+        }
+
+        // Starts spawning after 3 seconds
+        private IEnumerator StartSpawnCoroutine()
+        {
+            yield return new WaitForSeconds(3);
             zombieSpawner.StartSpawn();
         }
     }

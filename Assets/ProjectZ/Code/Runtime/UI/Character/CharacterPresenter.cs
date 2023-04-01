@@ -4,48 +4,55 @@ using ProjectZ.Code.Runtime.Patterns.Events;
 using UnityEngine;
 using ServiceLocator = ProjectZ.Code.Runtime.Patterns.ServiceLocator;
 
-namespace ProjectZ.Code.Runtime.UI
+namespace ProjectZ.Code.Runtime.UI.Character
 {
     public class CharacterPresenter : IDisposable
     {
-        private CharacterViewModel _viewModel;
+        private readonly CharacterViewModel _characterViewModel;
 
-        public CharacterPresenter(CharacterViewModel viewModel)
+        public CharacterPresenter(CharacterViewModel characterViewModel)
         {
-            _viewModel = viewModel;
+            _characterViewModel = characterViewModel;
             
             var eventQueue = ServiceLocator.Instance.GetService<IEventQueue>();
             eventQueue.Subscribe<WeaponSwitchEvent>(OnWeaponSwitch);
             eventQueue.Subscribe<WeaponFiredEvent>(OnWeaponFired);
             eventQueue.Subscribe<WeaponReloadedEvent>(OnWeaponReloaded);
+            eventQueue.Subscribe<PointsUpdatedEvent>(OnPointsUpdated);
+        }
+
+        private void OnPointsUpdated(PointsUpdatedEvent data)
+        {
+            _characterViewModel.Points.Value = data.Points;
         }
 
         // TODO:
         private void OnWeaponFired(WeaponFiredEvent data)
         {
-            _viewModel.RoundsInMagazine.Value = data.RoundsMagazine;
+            _characterViewModel.RoundsInMagazine.Value = data.RoundsMagazine;
+            // _viewModel.IsVisible.Value = !_viewModel.IsVisible.Value;
         }
         
         private void OnWeaponReloaded(WeaponReloadedEvent data) 
         { 
-            _viewModel.RoundsInMagazine.Value = data.RoundsMagazine;
-            _viewModel.RoundsInInventory.Value = data.RoundsInventory;
+            _characterViewModel.RoundsInMagazine.Value = data.RoundsMagazine;
+            _characterViewModel.RoundsInInventory.Value = data.RoundsInventory;
         }
 
         private void OnWeaponSwitch(WeaponSwitchEvent data)
         {
-            _viewModel.WeaponName.Value = data.Name;
-            _viewModel.RoundsInMagazine.Value = data.AmmoMagazine;
-            _viewModel.RoundsInInventory.Value = data.AmmoInventory;
+            _characterViewModel.WeaponName.Value = data.Name;
+            _characterViewModel.RoundsInMagazine.Value = data.AmmoMagazine;
+            _characterViewModel.RoundsInInventory.Value = data.AmmoInventory;
         }
 
         public void Dispose()
         {
-            Debug.LogWarning("Disposed");
             var eventQueue = ServiceLocator.Instance.GetService<IEventQueue>();
             eventQueue.Unsubscribe<WeaponSwitchEvent>(OnWeaponSwitch);
             eventQueue.Unsubscribe<WeaponFiredEvent>(OnWeaponFired);
             eventQueue.Unsubscribe<WeaponReloadedEvent>(OnWeaponReloaded);
+            eventQueue.Unsubscribe<PointsUpdatedEvent>(OnPointsUpdated);
         }
     }
 }
