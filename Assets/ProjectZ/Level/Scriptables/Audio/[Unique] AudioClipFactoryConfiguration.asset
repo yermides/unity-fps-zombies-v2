@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: '[Unique] AudioClipFactoryConfiguration'
   m_EditorClassIdentifier: 
   audioClipToIDConfigurations:
+  - {fileID: 11400000, guid: 1a5d979dd9a0dfe4ba8a048e9ee9d795, type: 2}
   - {fileID: 11400000, guid: 9f7bcc40805ae1a4b81f2a3509232cbb, type: 2}
   - {fileID: 11400000, guid: b979ab6544bc841429eb3b15568e5d65, type: 2}
   - {fileID: 11400000, guid: dda22b84c19238349a48a64fb1275c26, type: 2}

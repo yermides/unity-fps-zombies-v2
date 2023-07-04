@@ -1,14 +1,12 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
-using InfimaGames.LowPolyShooterPack;
+using UnityEngine;
 using NaughtyAttributes;
 using ProjectZ.Code.Runtime.Common;
 using ProjectZ.Code.Runtime.Common.Events;
 using ProjectZ.Code.Runtime.Patterns.Events;
 using ProjectZ.Code.Runtime.Utils;
-using ProjectZ.Code.Runtime.Utils.Extensions;
-using UnityEngine;
 using PlaySoundCharacterBehaviour = ProjectZ.Code.Runtime.Animation.PlaySoundCharacterBehaviour;
 using ServiceLocator = ProjectZ.Code.Runtime.Patterns.ServiceLocator;
 using WeaponBehaviour = ProjectZ.Code.Runtime.Weapons.WeaponBehaviour;
@@ -228,7 +226,24 @@ namespace ProjectZ.Code.Runtime.Character
         private void OnRunStarted() => _isHoldingButtonRun = true;
         private void OnRunCanceled() => _isHoldingButtonRun = false;
         private void OnJumpPerformed() => movement.Jump();
-        private void OnMeleePerformed() => DoAttack().WrapErrors();
+
+        private void OnMeleePerformed()
+        {
+            if(!CanPlayAnimationMelee()) return; // CanPlayAnimationMelee
+            
+            _isAttacking = true;
+            
+            animator.CrossFade("Knife", 
+                0.05f, 
+                animator.GetLayerIndex("Layer Action Override"),
+                0);
+            
+            // Do damage in the animation event
+
+            // Debug.LogWarning("Melee");
+            // DoAttack().WrapErrors();
+        }
+
         private void OnInteractPerformed() => interactor.DoInteract();
 
         private void OnCyclePerformed(float value)
@@ -262,13 +277,24 @@ namespace ProjectZ.Code.Runtime.Character
         private void OnSlideBack(int obj) => print("OnSlideBack");
         private void OnAnimationEndedHolster() => _isHolstering = false;
         private void OnAnimationEndedInspect() => throw new System.NotImplementedException();
-        private void OnAnimationEndedMelee() => throw new System.NotImplementedException();
+
+        private void OnAnimationEndedMelee()
+        {
+            Debug.LogWarning("OnAnimationEndedMelee");
+            _isAttacking = false; // TODO: set animation event
+        }
+
         private void OnAnimationEndedGrenadeThrow() => throw new System.NotImplementedException();
         private void OnAnimationEndedReload() => _isReloading = false;
         private void OnAnimationEndedBolt() => throw new System.NotImplementedException();
         private void OnSetActiveMagazine(int active) => throw new System.NotImplementedException();
         private void OnGrenade() => throw new System.NotImplementedException();
-        private void OnSetActiveKnife(int active) => throw new System.NotImplementedException();
+        private void OnSetActiveKnife(int active) 
+        {
+            // TODO: I should have another method, like OnAnimationMeleeHit or something
+            combat.Attack();
+            Debug.LogWarning("Hit?");
+        }
 
         private void OnAmmunitionFill(int amount)
         {
@@ -381,13 +407,15 @@ namespace ProjectZ.Code.Runtime.Character
             return true;
         }
 
-        private bool CanAim() => !_isHolstered && !_isHolstering && !_isReloading;
-        private bool CanPlayAnimationFire() => !_isReloading && !_isHolstering;
+        private bool CanAim() => !_isHolstered && !_isHolstering && !_isReloading && !_isAttacking;
+        private bool CanPlayAnimationFire() => !_isReloading && !_isHolstering && !_isAttacking;
         private bool CanPlayAnimationReload() => !_isReloading
+                                                 && !_isAttacking
                                                  && !_equippedWeapon.IsMagazineFull()
                                                  && _equippedWeapon.GetAmmunitionInventoryCurrent() > 0;
         private bool CanPlayAnimationHolster() => !_isReloading;
-        private bool CanChangeWeapon() => !_isReloading && !_isHolstering;
+        private bool CanPlayAnimationMelee() => !_isReloading && !_isAttacking;
+        private bool CanChangeWeapon() => !_isReloading && !_isHolstering && !_isAttacking;
         
         private void PlayReloadAnimation()
         {

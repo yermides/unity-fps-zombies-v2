@@ -7,6 +7,7 @@ namespace ProjectZ.Code.Runtime.Common.Commands
 {
     public class PlayOneShotClipCommand : ICommand
     {
+        private static ServiceLocator Locator = ServiceLocator.Instance;
         private readonly AudioClipID _clipID;
         private readonly AudioSettings _audioSettings;
         private readonly float _delay;
@@ -20,10 +21,9 @@ namespace ProjectZ.Code.Runtime.Common.Commands
         
         public Task Execute()
         {
-            var locator = ServiceLocator.Instance;
-            var factory = locator.GetService<AudioClipFactory>();
+            var factory = Locator.GetService<AudioClipFactory>();
             var clip = factory.Get(_clipID);
-            var service = locator.GetService<IAudioManagerService>();
+            var service = Locator.GetService<IAudioManagerService>();
 
             if (_delay > 0.0f)
             {

@@ -4,6 +4,7 @@ namespace ProjectZ.Code.Runtime.Core.Audio
 {
     /// <summary>
     /// More of a Dictionary searcher than a Factory
+    /// Should really be named AudioClipRepository
     /// </summary>
     public class AudioClipFactory
     {
